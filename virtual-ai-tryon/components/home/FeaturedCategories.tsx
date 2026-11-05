@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function FeaturedCategories() {
   return (
@@ -17,7 +18,7 @@ export default function FeaturedCategories() {
       </div>
 
       <div className="categories-grid">
-        <div className="category-card">
+        <Link href="/explore?category=clothing" className="category-card">
           <Image
             src="/images/clothing.png"
             alt="Fashion clothing collection"
@@ -25,9 +26,9 @@ export default function FeaturedCategories() {
             height={500}
           />
           <h3>Clothing</h3>
-        </div>
+        </Link>
 
-        <div className="category-card">
+        <Link href="/explore?category=shoes" className="category-card">
           <Image
             src="/images/shoes.png"
             alt="Fashion shoes collection"
@@ -35,9 +36,9 @@ export default function FeaturedCategories() {
             height={500}
           />
           <h3>Shoes</h3>
-        </div>
+        </Link>
 
-        <div className="category-card">
+        <Link href="/explore?category=bags" className="category-card">
           <Image
             src="/images/bags.png"
             alt="Fashion bags collection"
@@ -45,9 +46,9 @@ export default function FeaturedCategories() {
             height={500}
           />
           <h3>Bags</h3>
-        </div>
+        </Link>
 
-        <div className="category-card">
+        <Link href="/explore?category=accessories" className="category-card">
           <Image
             src="/images/accessories.png"
             alt="Fashion accessories collection"
@@ -55,7 +56,7 @@ export default function FeaturedCategories() {
             height={500}
           />
           <h3>Accessories</h3>
-        </div>
+        </Link>
       </div>
     </section>
   );
