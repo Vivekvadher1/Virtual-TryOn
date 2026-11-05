@@ -69,16 +69,153 @@
 }
 
 .hero-image {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .hero-image img {
-  width: 100%;
-  max-width: 500px;
-  height: 550px;
-  object-fit: cover;
-  border-radius: 20px;
+    width: 100%;
+    max-width: 500px;
+    height: 550px;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+/* Tablet screens */
+@media (max-width: 1024px) {
+    .hero {
+        padding: 60px 5%;
+        gap: 30px;
+    }
+
+    .hero-content h1 {
+        font-size: 46px;
+    }
+
+    .hero-image img {
+        height: 450px;
+    }
+}
+
+/* Mobile screens */
+@media (max-width: 768px) {
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 50px 6%;
+    }
+
+    .hero-content {
+        max-width: 100%;
+    }
+
+    .hero-content h1 {
+        font-size: 38px;
+        letter-spacing: -1px;
+    }
+
+    .hero-description {
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 15px;
+    }
+
+    .hero-buttons {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .hero-image {
+        width: 100%;
+    }
+
+    .hero-image img {
+        width: 100%;
+        max-width: 420px;
+        height: 450px;
+    }
+}
+
+/* Small mobile screens */
+@media (max-width: 480px) {
+    .hero {
+        padding: 40px 5%;
+    }
+
+    .hero-content h1 {
+        font-size: 32px;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .hero-buttons button {
+        width: 100%;
+    }
+
+    .hero-image img {
+        height: 380px;
+    }
+}
+
+/* Hero button animations */
+
+.hero-buttons button {
+    transition: all 0.3s ease;
+}
+
+.hero-buttons button:first-child:hover {
+    background: #a855f7;
+    border-color: #a855f7;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(168, 85, 247, 0.2);
+}
+
+.hero-buttons button:last-child:hover {
+    border-color: #a855f7;
+    color: #a855f7;
+    transform: translateY(-3px);
+}
+
+.hero-image img {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.hero-image img:hover {
+  transform: scale(1.02);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+}
+
+@keyframes heroFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-content {
+  animation: heroFadeIn 0.8s ease forwards;
+}
+
+.hero-image {
+  animation: heroFadeIn 1s ease forwards;
+}   
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-content,
+  .hero-image,
+  .hero-buttons button,
+  .hero-image img {
+    animation: none;
+    transition: none;
+  }
 }
