@@ -67,3 +67,18 @@
     color: #171717;
     border: 1px solid #cccccc;
 }
+
+.hero-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-image img {
+  width: 100%;
+  max-width: 500px;
+  height: 550px;
+  object-fit: cover;
+  border-radius: 20px;
+}

@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function Hero() {
   return (
     <section className="hero">
@@ -22,7 +24,13 @@ export default function Hero() {
       </div>
 
       <div className="hero-image">
-        {/* We'll add the fashion image here in the next step */}
+        <Image
+          src="/images/Hero.png"
+          alt="Fashion model wearing a stylish outfit"
+          width={600}
+          height={700}
+          priority
+        />
       </div>
     </section>
   );
