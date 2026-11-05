@@ -1,3 +1,4 @@
+import FeaturedCategories from "@/components/home/FeaturedCategories";
 import Hero from "@/components/home/Hero";
 import Navbar from "@/components/layout/Navbar";
 
@@ -7,6 +8,8 @@ export default function Home() {
       <Navbar />
 
       <Hero />
+
+      <FeaturedCategories />
     </main>
   );
 }
