@@ -1,11 +1,27 @@
+"use client";
+
+import { useState } from "react";
+
 import ProductCard from "@/components/explore/ProductCard";
 import ProductCategoryFilter from "@/components/explore/ProductCategoryFilter";
+
 import { exploreProducts } from "@/data/explore/explore-products";
 
 export default function ExplorePage() {
+  // Stores the currently selected product category.
+  const [selectedCategory, setSelectedCategory] = useState("All");
+
+  // Displays all products or only products from the selected category.
+  const filteredProducts =
+    selectedCategory === "All"
+      ? exploreProducts
+      : exploreProducts.filter(
+          (product) => product.category === selectedCategory,
+        );
+
   return (
     <main className="explore-page">
-      {/* Explore page heading and introduction */}
+      {/* Explore page heading */}
       <section className="explore-header">
         <p className="explore-label">DISCOVER YOUR STYLE</p>
 
@@ -19,13 +35,16 @@ export default function ExplorePage() {
         </p>
       </section>
 
-      {/* Product category selection buttons */}
-      <ProductCategoryFilter />
+      {/* Category filters */}
+      <ProductCategoryFilter
+        selectedCategory={selectedCategory}
+        onCategoryChange={setSelectedCategory}
+      />
 
-      {/* Display all products from the product data file */}
+      {/* Dynamically filtered product collection */}
       <section className="product-listing-section">
         <div className="product-listing-grid">
-          {exploreProducts.map((product) => (
+          {filteredProducts.map((product) => (
             <ProductCard
               key={product.id}
               name={product.name}

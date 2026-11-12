@@ -1,12 +1,17 @@
 "use client";
 
-import { useState } from "react";
+interface ProductCategoryFilterProps {
+  selectedCategory: string;
+  onCategoryChange: (category: string) => void;
+}
 
+// Available categories for filtering the product collection.
 const productCategories = ["All", "Clothing", "Shoes", "Bags", "Accessories"];
 
-export default function ProductCategoryFilter() {
-  const [selectedCategory, setSelectedCategory] = useState("All");
-
+export default function ProductCategoryFilter({
+  selectedCategory,
+  onCategoryChange,
+}: ProductCategoryFilterProps) {
   return (
     <section className="category-filter-section">
       <div className="category-filter-container">
@@ -16,7 +21,7 @@ export default function ProductCategoryFilter() {
             className={`category-filter-btn ${
               selectedCategory === category ? "active" : ""
             }`}
-            onClick={() => setSelectedCategory(category)}
+            onClick={() => onCategoryChange(category)}
           >
             {category}
           </button>
