@@ -1,0 +1,37 @@
+
+interface ProductSearchBarProps {
+  searchTerm: string;
+  onSearchChange: (value: string) => void;
+}
+
+export default function ProductSearchBar({
+  searchTerm,
+  onSearchChange,
+}: ProductSearchBarProps) {
+  return (
+    <div className="product-search">
+      <span className="search-icon">⌕</span>
+
+      <input
+        type="search"
+        placeholder="Search products..."
+        value={searchTerm}
+        onChange={(event) => onSearchChange(event.target.value)}
+        aria-label="Search products"
+      />
+
+      {/* Clear search button */}
+      {searchTerm && (
+        <button
+          type="button"
+          className="search-clear-button"
+          onClick={() => onSearchChange("")}
+          aria-label="Clear search"
+        >
+          ×
+        </button>
+      )}
+    </div>
+  );
+}
+    

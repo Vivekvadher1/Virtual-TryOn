@@ -1,0 +1,74 @@
+/* Product search container */
+.product-search {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    max-width: 400px;
+    padding: 12px 16px;
+    margin: 24px 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Search icon */
+.search-icon {
+    font-size: 22px;
+    color: #777;
+    line-height: 1;
+}
+
+/* Search input */
+.product-search input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #333;
+    font-size: 14px;
+}
+
+/* Placeholder */
+.product-search input::placeholder {
+    color: #999;
+}
+
+/* Focus effect */
+.product-search:focus-within {
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+
+/* Clear search button */
+.search-clear-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: #777;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Hover effect */
+.search-clear-button:hover {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+/* Keyboard focus */
+.search-clear-button:focus-visible {
+    outline: 2px solid #7c3aed;
+    outline-offset: 2px;
+}
