@@ -1,6 +1,9 @@
+"use client";
+
+import { use, useState, Suspense } from "react";
+
 import Image from "next/image";
 import Link from "next/link";
-import { Suspense } from "react";
 
 import { exploreProducts } from "@/data/explore/explore-products";
 
@@ -16,15 +19,19 @@ export default function ProductDetailsPage({
 }: ProductDetailsPageProps) {
   return (
     <Suspense fallback={<p>Loading product details...</p>}>
-      {params.then(({ id }) => (
-        <ProductDetails id={id} />
-      ))}
+      <ProductDetails params={params} />
     </Suspense>
   );
 }
 
 // Product details component
-function ProductDetails({ id }: { id: string }) {
+function ProductDetails({ params }: ProductDetailsPageProps) {
+  // Unwrap the params Promise
+  const { id } = use(params);
+
+  // Store the selected size
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
+
   // Convert URL ID into a number
   const productId = Number(id);
 
@@ -56,6 +63,7 @@ function ProductDetails({ id }: { id: string }) {
             alt={product.name}
             width={600}
             height={700}
+            loading="eager"
           />
         </div>
 
@@ -69,6 +77,28 @@ function ProductDetails({ id }: { id: string }) {
           </p>
 
           <p className="product-details-description">{product.description}</p>
+
+          {/* Display size options */}
+          {product.sizes && product.sizes.length > 0 && (
+            <div className="product-size-section">
+              <h3>Select Size</h3>
+
+              <div className="product-size-options">
+                {product.sizes.map((size) => (
+                  <button
+                    key={size}
+                    type="button"
+                    className={`product-size-btn ${
+                      selectedSize === size ? "selected" : ""
+                    }`}
+                    onClick={() => setSelectedSize(size)}
+                  >
+                    {size}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
           <button type="button" className="product-try-on-btn">
             Try On
