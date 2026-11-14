@@ -7,6 +7,7 @@ export interface ExploreProduct {
   image: string;
   description: string;
   sizes?: string[];
+  colors?: string[];
 }
 
 // Sample product data for the Explore page.
@@ -22,6 +23,7 @@ export const exploreProducts: ExploreProduct[] = [
     description:
       "A timeless white shirt with a clean look, perfect for casual and formal occasions.",
     sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    colors: ["White", "Black", "Blue", "Grey"],
   },
   {
     id: 2,
@@ -32,6 +34,7 @@ export const exploreProducts: ExploreProduct[] = [
     description:
       "A comfortable black T-shirt designed for effortless everyday styling.",
     sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    colors: ["White", "Black", "Blue", "Grey"],
   },
   {
     id: 3,
@@ -42,6 +45,7 @@ export const exploreProducts: ExploreProduct[] = [
     description:
       "A versatile denim jacket that adds a classic touch to your everyday outfit.",
     sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    colors: ["White", "Black", "Blue", "Grey"],
   },
   {
     id: 4,
@@ -52,6 +56,7 @@ export const exploreProducts: ExploreProduct[] = [
     description:
       "A relaxed-fit hoodie designed for comfort during casual outings.",
     sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    colors: ["White", "Black", "Blue", "Grey"],
   },
 
   // ---------------- SHOES ----------------
@@ -64,6 +69,7 @@ export const exploreProducts: ExploreProduct[] = [
     description:
       "Stylish everyday shoes that combine a modern appearance with comfort.",
     sizes: ["6", "7", "8", "9", "10", "11"],
+    colors: ["White", "Black", "Brown"],
   },
   {
     id: 6,
@@ -74,6 +80,7 @@ export const exploreProducts: ExploreProduct[] = [
     description:
       "Minimal white sneakers that pair easily with a variety of outfits.",
     sizes: ["6", "7", "8", "9", "10", "11"],
+    colors: ["White", "Black", "Brown"],
   },
   {
     id: 7,
@@ -84,6 +91,7 @@ export const exploreProducts: ExploreProduct[] = [
     description:
       "Elegant loafers that bring a refined look to casual and smart outfits.",
     sizes: ["6", "7", "8", "9", "10", "11"],
+    colors: ["White", "Black", "Brown"],
   },
   {
     id: 8,
@@ -94,6 +102,7 @@ export const exploreProducts: ExploreProduct[] = [
     description:
       "Lightweight running shoes designed for active days and everyday movement.",
     sizes: ["6", "7", "8", "9", "10", "11"],
+    colors: ["White", "Black", "Brown"],
   },
 
   // ---------------- BAGS ----------------
@@ -105,6 +114,7 @@ export const exploreProducts: ExploreProduct[] = [
     image: "/images/Bags/bags.png",
     description:
       "A stylish handbag that complements both everyday and special-occasion outfits.",
+    colors: ["Beige", "Black", "Brown"],
   },
   {
     id: 10,
@@ -114,6 +124,7 @@ export const exploreProducts: ExploreProduct[] = [
     image: "/images/Bags/bags.png",
     description:
       "A practical backpack designed to carry your essentials while travelling or commuting.",
+    colors: ["Beige", "Black", "Brown"],
   },
   {
     id: 11,
@@ -122,6 +133,7 @@ export const exploreProducts: ExploreProduct[] = [
     price: 1299,
     image: "/images/Bags/bags.png",
     description: "A simple and spacious tote bag for everyday use.",
+    colors: ["Beige", "Black", "Brown"],
   },
   {
     id: 12,
@@ -131,6 +143,7 @@ export const exploreProducts: ExploreProduct[] = [
     image: "/images/Bags/bags.png",
     description:
       "A modern crossbody bag offering a convenient and stylish carrying option.",
+    colors: ["Beige", "Black", "Brown"],
   },
 
   // ---------------- ACCESSORIES ----------------
@@ -142,6 +155,7 @@ export const exploreProducts: ExploreProduct[] = [
     image: "/images/Accessories/accessories.png",
     description:
       "A versatile accessory designed to add a finishing touch to your personal style.",
+    colors: ["Gold", "Black", "Silver"],
   },
   {
     id: 14,
@@ -151,6 +165,7 @@ export const exploreProducts: ExploreProduct[] = [
     image: "/images/Accessories/accessories.png",
     description:
       "Classic black sunglasses that add a bold touch to your everyday look.",
+    colors: ["Gold", "Black", "Silver"],
   },
   {
     id: 15,
@@ -160,6 +175,7 @@ export const exploreProducts: ExploreProduct[] = [
     image: "/images/Accessories/accessories.png",
     description:
       "A sophisticated wrist watch that complements both casual and formal outfits.",
+    colors: ["Gold", "Black", "Silver"],
   },
   {
     id: 16,
@@ -169,5 +185,6 @@ export const exploreProducts: ExploreProduct[] = [
     image: "/images/Accessories/accessories.png",
     description:
       "A comfortable baseball cap that adds a relaxed finish to casual outfits.",
+    colors: ["Gold", "Black", "Silver"],
   },
 ];

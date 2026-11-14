@@ -31,6 +31,8 @@ function ProductDetails({ params }: ProductDetailsPageProps) {
 
   // Store the selected size
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  // Store the color selected by the customer.
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
 
   // Convert URL ID into a number
   const productId = Number(id);
@@ -95,6 +97,32 @@ function ProductDetails({ params }: ProductDetailsPageProps) {
                   >
                     {size}
                   </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Display color options when available */}
+          {product.colors && product.colors.length > 0 && (
+            <div className="product-color-section">
+              <h3>
+                Select Color
+                {selectedColor && `: ${selectedColor}`}
+              </h3>
+
+              <div className="product-color-options">
+                {product.colors.map((color) => (
+                  <button
+                    key={color}
+                    type="button"
+                    className={`product-color-btn ${
+                      selectedColor === color ? "selected" : ""
+                    }`}
+                    style={{ backgroundColor: color.toLowerCase() }}
+                    aria-label={`Select ${color}`}
+                    aria-pressed={selectedColor === color}
+                    onClick={() => setSelectedColor(color)}
+                  />
                 ))}
               </div>
             </div>
