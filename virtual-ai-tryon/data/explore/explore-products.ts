@@ -6,6 +6,7 @@ export interface ExploreProduct {
   category: string;
   price: number;
   image: string;
+  description: string;
 }
 
 // Sample product data for the Explore page.
@@ -17,28 +18,32 @@ export const exploreProducts: ExploreProduct[] = [
     name: "Classic White Shirt",
     category: "Clothing",
     price: 1999,
-    image: "/images/Clothing/clothing.png",
+    image: "/images/Clothing/white-shirt.jpg",
+    description: "A timeless white shirt with a clean look, perfect for casual and formal occasions.",
   },
   {
     id: 2,
     name: "Casual Black T-Shirt",
     category: "Clothing",
     price: 899,
-    image: "/images/Clothing/clothing.png",
+    image: "/images/Clothing/black-tshirt.jpg",
+    description: "A comfortable black T-shirt designed for effortless everyday styling."
   },
   {
     id: 3,
     name: "Premium Denim Jacket",
     category: "Clothing",
     price: 3499,
-    image: "/images/Clothing/clothing.png",
+    image: "/images/Clothing/denim-jacket.jpg",
+    description: "A versatile denim jacket that adds a classic touch to your everyday outfit."
   },
   {
     id: 4,
     name: "Comfort Fit Hoodie",
     category: "Clothing",
     price: 1799,
-    image: "/images/Clothing/clothing.png",
+    image: "/images/Clothing/hoddie.jpg",
+    description: "A relaxed-fit hoodie designed for comfort during casual outings."
   },
 
   // ---------------- SHOES ----------------
@@ -47,7 +52,8 @@ export const exploreProducts: ExploreProduct[] = [
     name: "Premium Fashion Shoes",
     category: "Shoes",
     price: 2499,
-    image: "/images/Shoes/shoes.png",
+    image: "/images/Shoes/Shoes-1.png",
+    description: "Stylish everyday shoes that combine a modern appearance with comfort."
   },
   {
     id: 6,
@@ -55,6 +61,7 @@ export const exploreProducts: ExploreProduct[] = [
     category: "Shoes",
     price: 2999,
     image: "/images/Shoes/shoes.png",
+    description: "Minimal white sneakers that pair easily with a variety of outfits."
   },
   {
     id: 7,
@@ -62,6 +69,7 @@ export const exploreProducts: ExploreProduct[] = [
     category: "Shoes",
     price: 2199,
     image: "/images/Shoes/shoes.png",
+    description: "Elegant loafers that bring a refined look to casual and smart outfits."
   },
   {
     id: 8,
@@ -69,6 +77,7 @@ export const exploreProducts: ExploreProduct[] = [
     category: "Shoes",
     price: 1899,
     image: "/images/Shoes/shoes.png",
+    description: "Lightweight running shoes designed for active days and everyday movement."
   },
 
   // ---------------- BAGS ----------------
@@ -78,6 +87,7 @@ export const exploreProducts: ExploreProduct[] = [
     category: "Bags",
     price: 2999,
     image: "/images/Bags/bags.png",
+    description: "A stylish handbag that complements both everyday and special-occasion outfits."
   },
   {
     id: 10,
@@ -85,6 +95,7 @@ export const exploreProducts: ExploreProduct[] = [
     category: "Bags",
     price: 1599,
     image: "/images/Bags/bags.png",
+    description: "A practical backpack designed to carry your essentials while travelling or commuting."
   },
   {
     id: 11,
@@ -92,6 +103,7 @@ export const exploreProducts: ExploreProduct[] = [
     category: "Bags",
     price: 1299,
     image: "/images/Bags/bags.png",
+    description: "A simple and spacious tote bag for everyday use."
   },
   {
     id: 12,
@@ -99,6 +111,7 @@ export const exploreProducts: ExploreProduct[] = [
     category: "Bags",
     price: 2399,
     image: "/images/Bags/bags.png",
+    description: "A modern crossbody bag offering a convenient and stylish carrying option."
   },
 
   // ---------------- ACCESSORIES ----------------
@@ -108,6 +121,7 @@ export const exploreProducts: ExploreProduct[] = [
     category: "Accessories",
     price: 999,
     image: "/images/Accessories/accessories.png",
+    description: "A versatile accessory designed to add a finishing touch to your personal style."
   },
   {
     id: 14,
@@ -115,6 +129,7 @@ export const exploreProducts: ExploreProduct[] = [
     category: "Accessories",
     price: 799,
     image: "/images/Accessories/accessories.png",
+    description: "Classic black sunglasses that add a bold touch to your everyday look."
   },
   {
     id: 15,
@@ -122,6 +137,7 @@ export const exploreProducts: ExploreProduct[] = [
     category: "Accessories",
     price: 1999,
     image: "/images/Accessories/accessories.png",
+    description: "A sophisticated wrist watch that complements both casual and formal outfits."
   },
   {
     id: 16,
@@ -129,5 +145,6 @@ export const exploreProducts: ExploreProduct[] = [
     category: "Accessories",
     price: 599,
     image: "/images/Accessories/accessories.png",
+    description: "A comfortable baseball cap that adds a relaxed finish to casual outfits."
   },
 ];

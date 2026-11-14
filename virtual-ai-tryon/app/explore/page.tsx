@@ -101,6 +101,7 @@ export default function ExplorePage() {
             sortedProducts.map((product) => (
               <ProductCard
                 key={product.id}
+                id={product.id}
                 name={product.name}
                 category={product.category}
                 price={product.price}

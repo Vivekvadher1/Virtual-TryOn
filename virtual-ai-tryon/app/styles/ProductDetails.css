@@ -1,0 +1,134 @@
+/* Main product details page */
+.product-details-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+}
+
+/* Back to Explore link */
+.back-to-explore {
+    display: inline-block;
+    margin-bottom: 30px;
+    color: #555;
+    font-size: 15px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.back-to-explore:hover {
+    color: #000;
+}
+
+/* Product image and information layout */
+.product-details-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+/* Product image */
+.product-details-image {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 14px;
+    background: #f5f5f5;
+}
+
+.product-details-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+/* Product information */
+.product-details-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.product-details-category {
+    margin-bottom: 12px;
+    color: #777;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.product-details-info h1 {
+    margin: 0 0 16px;
+    color: #222;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.product-details-price {
+    margin-bottom: 20px;
+    color: #222;
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.product-details-description {
+    max-width: 500px;
+    margin-bottom: 30px;
+    color: #666;
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+/* Product not found page */
+.product-not-found {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.product-not-found h1 {
+    margin-bottom: 12px;
+    font-size: 32px;
+    color: #222;
+}
+
+.product-not-found p {
+    margin-bottom: 24px;
+    color: #666;
+}
+
+.product-not-found a {
+    color: #222;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+/* Tablet and mobile responsive layout */
+@media (max-width: 768px) {
+    .product-details-page {
+        padding: 25px 18px 50px;
+    }
+
+    .product-details-container {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .product-details-info h1 {
+        font-size: 28px;
+    }
+
+    .product-details-price {
+        font-size: 22px;
+    }
+
+    .product-details-description {
+        font-size: 15px;
+    }
+}
