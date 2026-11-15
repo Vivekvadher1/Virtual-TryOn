@@ -33,6 +33,8 @@ function ProductDetails({ params }: ProductDetailsPageProps) {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   // Store the color selected by the customer.
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  // Track whether the current product is in the wishlist.
+  const [isWishlisted, setIsWishlisted] = useState(false);
 
   // Convert URL ID into a number
   const productId = Number(id);
@@ -128,6 +130,16 @@ function ProductDetails({ params }: ProductDetailsPageProps) {
             </div>
           )}
 
+          {/* Add or remove the product from the wishlist */}
+          <button
+            type="button"
+            className={`product-wishlist-btn ${isWishlisted ? "active" : ""}`}
+            onClick={() => setIsWishlisted(!isWishlisted)}
+            aria-pressed={isWishlisted}
+          >
+            {isWishlisted ? "♥ Added to Wishlist" : "♡ Add to Wishlist"}
+          </button>
+          
           <button type="button" className="product-try-on-btn">
             Try On
           </button>

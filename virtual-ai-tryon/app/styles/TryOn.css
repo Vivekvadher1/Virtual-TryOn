@@ -1,0 +1,133 @@
+/* Main Try-On page */
+.try-on-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+}
+
+/* Page heading */
+.try-on-header {
+    margin-bottom: 40px;
+}
+
+.try-on-header h1 {
+    margin: 20px 0 12px;
+    color: #222;
+    font-size: 36px;
+    font-weight: 700;
+}
+
+.try-on-header p {
+    max-width: 650px;
+    color: #666;
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+/* Main workspace */
+.try-on-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+/* Section headings */
+.try-on-upload h2,
+.try-on-product h2 {
+    margin-bottom: 20px;
+    font-size: 21px;
+    color: #222;
+}
+
+/* Upload placeholder */
+.upload-placeholder,
+.selected-product-placeholder {
+    min-height: 400px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: 2px dashed #ccc;
+    border-radius: 12px;
+    background: #fafafa;
+}
+
+.upload-icon {
+    margin-bottom: 15px;
+    font-size: 48px;
+    color: #555;
+}
+
+.upload-placeholder h3 {
+    margin-bottom: 10px;
+    font-size: 19px;
+    color: #222;
+}
+
+.upload-placeholder p,
+.selected-product-placeholder p {
+    margin-bottom: 20px;
+    color: #777;
+    line-height: 1.6;
+}
+
+/* Upload button */
+.upload-photo-btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 6px;
+    background: #222;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.upload-photo-btn:hover {
+    background: #444;
+}
+
+.upload-placeholder span {
+    margin-top: 15px;
+    color: #999;
+    font-size: 12px;
+}
+
+/* Mobile responsive layout */
+@media (max-width: 768px) {
+    .try-on-page {
+        padding: 25px 18px 50px;
+    }
+
+    .try-on-header h1 {
+        font-size: 28px;
+    }
+
+    .try-on-container {
+        grid-template-columns: 1fr;
+        gap: 35px;
+    }
+
+    .upload-placeholder,
+    .selected-product-placeholder {
+        min-height: 300px;
+    }
+}
+
+/* Uploaded photo preview */
+.uploaded-photo-preview {
+    width: 100%;
+    max-width: 280px;
+    max-height: 320px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    object-fit: contain;
+}
+
+/* Make the upload label look like a button */
+.upload-photo-btn {
+    display: inline-block;
+    text-decoration: none;
+}

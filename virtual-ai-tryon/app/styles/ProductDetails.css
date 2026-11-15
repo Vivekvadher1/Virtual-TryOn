@@ -218,3 +218,28 @@
 .product-color-btn[style*="beige"] {
     border: 2px solid #bbb;
 }
+
+
+/* Wishlist button */
+.product-wishlist-btn {
+    margin-bottom: 18px;
+    padding: 12px 22px;
+    border: 1px solid #222;
+    border-radius: 6px;
+    background: #fff;
+    color: #222;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.product-wishlist-btn:hover {
+    background: #f5f5f5;
+}
+
+.product-wishlist-btn.active {
+    background: #fff0f0;
+    border-color: #e63946;
+    color: #e63946;
+}
