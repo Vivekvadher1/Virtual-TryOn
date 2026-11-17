@@ -12,6 +12,12 @@ function TryOnContent() {
   // Store the uploaded photo preview URL.
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
 
+  // Track the Try-On generation status.
+  const [isGenerating, setIsGenerating] = useState(false);
+
+  // Store the generation result message.
+  const [generationMessage, setGenerationMessage] = useState("");
+
   // Read selected product options from the URL.
   const searchParams = useSearchParams();
 
@@ -61,6 +67,22 @@ function TryOnContent() {
 
     setUploadedImage(imageUrl);
   };
+
+  // Simulate the Try-On generation process.
+  const handleGenerateTryOn = () => {
+    if (!isReadyToGenerate) return;
+
+    setIsGenerating(true);
+    setGenerationMessage("");
+
+    setTimeout(() => {
+      setIsGenerating(false);
+      setGenerationMessage(
+        "Your Try-On request is ready! AI integration will be added later.",
+      );
+    }, 2000);
+  };
+
   return (
     <main className="try-on-page">
       {/* Page heading */}
@@ -167,25 +189,26 @@ function TryOnContent() {
             </div>
           )}
         </div>
-           </section>
+      </section>
 
       {/* Generate Try-On section */}
       <section className="generate-try-on-section">
         <button
           type="button"
           className="generate-try-on-btn"
-          disabled={!isReadyToGenerate}
+          onClick={handleGenerateTryOn}
+          disabled={!isReadyToGenerate || isGenerating}
         >
-          Generate Try-On
+          {isGenerating ? "Generating Try-On..." : "Generate Try-On"}
         </button>
 
-        {!uploadedImage && (
-          <p>Please upload your photo to continue.</p>
+        {generationMessage && (
+          <p className="generation-success-message">{generationMessage}</p>
         )}
 
-        {!selectedProduct && (
-          <p>Please select a product first.</p>
-        )}
+        {!uploadedImage && <p>Please upload your photo to continue.</p>}
+
+        {!selectedProduct && <p>Please select a product first.</p>}
 
         {selectedProduct && requiresSize && !isSizeValid && (
           <p>Please select a valid product size.</p>
@@ -196,9 +219,39 @@ function TryOnContent() {
         )}
       </section>
 
+      {/* Try-On Result Preview Section */}
+      <section className="try-on-result-section">
+        <h2>Your Try-On Result</h2>
+
+        <div className="try-on-result-card">
+          {generationMessage ? (
+            <>
+              <div className="result-placeholder">
+                <div className="result-placeholder-icon">✨</div>
+
+                <h3>Your result will appear here</h3>
+
+                <p>
+                  Your request is ready. Once AI integration is connected, your
+                  virtual try-on image will appear here.
+                </p>
+              </div>
+            </>
+          ) : (
+            <div className="result-placeholder">
+              <div className="result-placeholder-icon">👗</div>
+
+              <h3>Your virtual try-on preview</h3>
+
+              <p>
+                Upload your photo, select a product, and click Generate Try-On
+                to get started.
+              </p>
+            </div>
+          )}
+        </div>
+      </section>
     </main>
-
-
   );
 }
 
