@@ -65,7 +65,11 @@ function TryOnContent() {
     // Create a temporary URL for the image preview.
     const imageUrl = URL.createObjectURL(file);
 
+    // Update the uploaded photo.
     setUploadedImage(imageUrl);
+
+    // Clear the previous generation message.
+    setGenerationMessage("");
   };
 
   // Simulate the Try-On generation process.
@@ -106,6 +110,18 @@ function TryOnContent() {
           <h2>Upload Your Photo</h2>
 
           <div className="upload-placeholder">
+            <input
+              type="file"
+              id="photo-upload"
+              accept="image/png, image/jpeg"
+              onChange={handleImageUpload}
+              onClick={(event) => {
+                // Allow selecting the same image again.
+                event.currentTarget.value = "";
+              }}
+              hidden
+            />
+
             {uploadedImage ? (
               <>
                 {/* Display uploaded photo */}
@@ -117,13 +133,24 @@ function TryOnContent() {
 
                 <p>Photo uploaded successfully!</p>
 
-                <button
-                  type="button"
-                  className="upload-photo-btn"
-                  onClick={() => setUploadedImage(null)}
-                >
-                  Remove Photo
-                </button>
+                <div className="photo-action-buttons">
+                  {/* Allow users to upload a different photo */}
+                  <label htmlFor="photo-upload" className="upload-photo-btn">
+                    Change Photo
+                  </label>
+
+                  {/* Remove the current uploaded photo */}
+                  <button
+                    type="button"
+                    className="remove-photo-btn"
+                    onClick={() => {
+                      setUploadedImage(null);
+                      setGenerationMessage("");
+                    }}
+                  >
+                    Remove Photo
+                  </button>
+                </div>
               </>
             ) : (
               <>
@@ -132,15 +159,6 @@ function TryOnContent() {
                 <h3>Upload Your Image</h3>
 
                 <p>Select a photo to start your virtual try-on experience.</p>
-
-                {/* Hidden file input */}
-                <input
-                  type="file"
-                  id="photo-upload"
-                  accept="image/png, image/jpeg"
-                  onChange={handleImageUpload}
-                  hidden
-                />
 
                 {/* Button that opens the file picker */}
                 <label htmlFor="photo-upload" className="upload-photo-btn">
