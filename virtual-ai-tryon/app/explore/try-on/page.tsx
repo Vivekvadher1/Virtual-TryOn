@@ -258,6 +258,15 @@ function TryOnContent() {
           </div>
         </div>
       </section>
+
+      {/* Download Try-On Result */}
+      <div className="download-result-section">
+        <button type="button" className="download-result-btn" disabled>
+          ↓ Download Try-On Result
+        </button>
+
+        <p>Download will be available once AI image generation is connected.</p>
+      </div>
     </main>
   );
 }

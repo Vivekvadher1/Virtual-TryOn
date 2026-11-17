@@ -343,3 +343,32 @@
         height: 300px;
     }
 }
+
+
+/* Download Result Section */
+.download-result-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin: 25px auto 40px;
+    padding: 20px;
+}
+
+.download-result-btn {
+    padding: 13px 30px;
+    border: none;
+    border-radius: 8px;
+    background: #b8b8b8;
+    color: #eeeeee;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: not-allowed;
+}
+
+.download-result-section p {
+    margin: 0;
+    color: #777;
+    font-size: 13px;
+    text-align: center;
+}
