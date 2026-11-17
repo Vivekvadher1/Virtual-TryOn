@@ -223,32 +223,39 @@ function TryOnContent() {
       <section className="try-on-result-section">
         <h2>Your Try-On Result</h2>
 
-        <div className="try-on-result-card">
-          {generationMessage ? (
-            <>
-              <div className="result-placeholder">
-                <div className="result-placeholder-icon">✨</div>
+        <div className="try-on-comparison">
+          {/* Original Uploaded Photo */}
+          <div className="comparison-card">
+            <h3>Original Photo</h3>
 
-                <h3>Your result will appear here</h3>
+            <div className="comparison-image">
+              {uploadedImage ? (
+                <img src={uploadedImage} alt="Your original uploaded photo" />
+              ) : (
+                <div className="comparison-placeholder">
+                  <span>📷</span>
+                  <p>Your uploaded photo will appear here.</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Virtual Try-On Result */}
+          <div className="comparison-card">
+            <h3>Virtual Try-On Result</h3>
+
+            <div className="comparison-image">
+              <div className="comparison-placeholder">
+                <span>✨</span>
 
                 <p>
-                  Your request is ready. Once AI integration is connected, your
-                  virtual try-on image will appear here.
+                  {generationMessage
+                    ? "Your AI-generated image will appear here after integration."
+                    : "Your virtual try-on result will appear here."}
                 </p>
               </div>
-            </>
-          ) : (
-            <div className="result-placeholder">
-              <div className="result-placeholder-icon">👗</div>
-
-              <h3>Your virtual try-on preview</h3>
-
-              <p>
-                Upload your photo, select a product, and click Generate Try-On
-                to get started.
-              </p>
             </div>
-          )}
+          </div>
         </div>
       </section>
     </main>

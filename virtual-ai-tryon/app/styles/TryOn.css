@@ -266,3 +266,80 @@
     font-size: 15px;
     line-height: 1.6;
 }
+
+
+/* Before and After Comparison Layout */
+.try-on-comparison {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 25px;
+    width: 100%;
+}
+
+/* Individual Comparison Cards */
+.comparison-card {
+    padding: 20px;
+    border: 1px solid #e5e1f0;
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.comparison-card h3 {
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 18px;
+    text-align: center;
+}
+
+/* Image Containers */
+.comparison-image {
+    width: 100%;
+    height: 350px;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #f5f3fa;
+}
+
+.comparison-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Empty Image Placeholder */
+.comparison-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    text-align: center;
+}
+
+.comparison-placeholder span {
+    margin-bottom: 15px;
+    font-size: 42px;
+}
+
+.comparison-placeholder p {
+    max-width: 250px;
+    color: #777;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* Mobile Responsive Layout */
+@media (max-width: 650px) {
+    .try-on-comparison {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .comparison-image {
+        height: 300px;
+    }
+}
