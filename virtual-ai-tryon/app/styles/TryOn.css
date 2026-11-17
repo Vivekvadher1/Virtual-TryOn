@@ -131,3 +131,89 @@
     display: inline-block;
     text-decoration: none;
 }
+
+
+/* Selected product card */
+.selected-product-card {
+    width: 100%;
+    padding: 20px;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    background: #fff;
+}
+
+.selected-product-image {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    max-height: 280px;
+    margin: 0 auto 20px;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.selected-product-info h3 {
+    margin-bottom: 10px;
+    color: #222;
+    font-size: 20px;
+}
+
+.selected-product-info p {
+    margin-bottom: 10px;
+    color: #666;
+    font-size: 14px;
+}
+
+.selected-product-info h4 {
+    margin-bottom: 15px;
+    color: #222;
+    font-size: 19px;
+    font-weight: 700;
+}
+
+
+/* Generate Try-On Section */
+.generate-try-on-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+/* Generate Try-On Button */
+.generate-try-on-btn {
+    padding: 14px 35px;
+    border: none;
+    border-radius: 8px;
+    background: #6c4cf1;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+/* Enabled Button Hover */
+.generate-try-on-btn:not(:disabled):hover {
+    background: #5535d5;
+    transform: translateY(-2px);
+}
+
+/* Disabled Button */
+.generate-try-on-btn:disabled {
+    background: #b8b8b8;
+    color: #eeeeee;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Validation Messages */
+.generate-try-on-section p {
+    margin: 0;
+    color: #d9534f;
+    font-size: 14px;
+    text-align: center;
+}

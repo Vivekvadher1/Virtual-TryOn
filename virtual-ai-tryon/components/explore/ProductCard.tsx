@@ -20,7 +20,13 @@ export default function ProductCard({
     <article className="product-card">
       {/* Product image and category */}
       <div className="product-card-image">
-        <Image src={image} alt={name} width={400} height={500} />
+        <Image
+          src={image}
+          alt={name}
+          width={400}
+          height={500}
+          loading="eager"
+        />
 
         <span className="product-card-category">{category}</span>
       </div>

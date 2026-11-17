@@ -139,10 +139,14 @@ function ProductDetails({ params }: ProductDetailsPageProps) {
           >
             {isWishlisted ? "♥ Added to Wishlist" : "♡ Add to Wishlist"}
           </button>
-          
-          <button type="button" className="product-try-on-btn">
+
+          {/* Navigate to Try-On with the selected product options */}
+          <Link
+            href={`/explore/try-on?productId=${product.id}&size=${encodeURIComponent(selectedSize ?? "")}&color=${encodeURIComponent(selectedColor ?? "")}`}
+            className="product-try-on-btn"
+          >
             Try On
-          </button>
+          </Link>
         </div>
       </section>
     </main>
