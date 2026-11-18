@@ -595,3 +595,144 @@
 .photo-guidelines li:last-child {
     margin-bottom: 0;
 }
+
+/* Photo Tips Button */
+.photo-tips-btn {
+    display: block;
+    margin: 15px auto 0;
+    padding: 10px 18px;
+    background: #f5f3ff;
+    color: #6941a5;
+    border: 1px solid #ded5f5;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.photo-tips-btn:hover {
+    background: #6941a5;
+    color: #ffffff;
+}
+
+/* Popup Background Overlay */
+.photo-tips-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+}
+
+/* Popup Card */
+.photo-tips-popup {
+    width: 100%;
+    max-width: 450px;
+    padding: 28px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.2);
+    animation: photoTipsAppear 0.25s ease;
+}
+
+/* Popup Header */
+.photo-tips-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.photo-tips-header h2 {
+    margin: 0;
+    font-size: 21px;
+    color: #222222;
+}
+
+/* Close Button */
+.photo-tips-close {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    background: #f1f1f1;
+    color: #333333;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.photo-tips-close:hover {
+    background: #e5e5e5;
+}
+
+/* Popup Description */
+.photo-tips-description {
+    margin: 16px 0;
+    color: #666666;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* Tips List */
+.photo-tips-list {
+    padding-left: 22px;
+    margin: 18px 0 24px;
+}
+
+.photo-tips-list li {
+    margin-bottom: 13px;
+    color: #444444;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.photo-tips-list li:last-child {
+    margin-bottom: 0;
+}
+
+/* Got It Button */
+.photo-tips-done-btn {
+    width: 100%;
+    padding: 12px;
+    background: #6941a5;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.photo-tips-done-btn:hover {
+    background: #543286;
+}
+
+/* Popup Animation */
+@keyframes photoTipsAppear {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Mobile Popup */
+@media (max-width: 480px) {
+    .photo-tips-popup {
+        padding: 22px;
+    }
+
+    .photo-tips-header h2 {
+        font-size: 18px;
+    }
+}
