@@ -449,3 +449,22 @@
 .try-on-summary-card strong {
     color: #222;
 }
+
+/* Try-On loading spinner */
+.try-on-spinner {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 3px solid rgba(255, 255, 255, 0.4);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: tryOnSpin 0.8s linear infinite;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+@keyframes tryOnSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}

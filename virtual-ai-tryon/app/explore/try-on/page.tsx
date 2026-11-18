@@ -246,7 +246,14 @@ function TryOnContent() {
           onClick={handleGenerateTryOn}
           disabled={!isReadyToGenerate || isGenerating}
         >
-          {isGenerating ? "Generating Try-On..." : "Generate Try-On"}
+          {isGenerating ? (
+            <>
+              <span className="try-on-spinner"></span>
+              Generating your virtual try-on...
+            </>
+          ) : (
+            "Generate Try-On"
+          )}
         </button>
 
         {generationMessage && (
