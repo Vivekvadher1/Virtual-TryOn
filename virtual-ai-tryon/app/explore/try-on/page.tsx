@@ -105,6 +105,23 @@ function TryOnContent() {
     }, 2000);
   };
 
+  // Reset the current Try-On session.
+  const handleResetTryOn = () => {
+    // Prevent resetting while generation is in progress.
+    if (isGenerating) return;
+
+    // Release the temporary image URL.
+    if (uploadedImage) {
+      URL.revokeObjectURL(uploadedImage);
+    }
+
+    // Remove the uploaded photo.
+    setUploadedImage(null);
+
+    // Clear the previous generation message.
+    setGenerationMessage("");
+  };
+
   return (
     <main className="try-on-page">
       {/* Page heading */}
@@ -272,6 +289,15 @@ function TryOnContent() {
           ) : (
             "Generate Try-On"
           )}
+        </button>
+
+        <button
+          type="button"
+          className="reset-try-on-btn"
+          onClick={handleResetTryOn}
+          disabled={isGenerating}
+        >
+          Reset Try-On
         </button>
 
         {generationMessage && (

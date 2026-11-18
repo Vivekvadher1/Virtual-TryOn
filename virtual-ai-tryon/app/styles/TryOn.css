@@ -539,3 +539,28 @@
         opacity: 0.3;
     }
 }
+
+/* Reset Try-On Button */
+.reset-try-on-btn {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 12px 24px;
+    background-color: #ffffff;
+    color: #d9534f;
+    border: 1px solid #d9534f;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.reset-try-on-btn:hover:not(:disabled) {
+    background-color: #d9534f;
+    color: #ffffff;
+}
+
+.reset-try-on-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
