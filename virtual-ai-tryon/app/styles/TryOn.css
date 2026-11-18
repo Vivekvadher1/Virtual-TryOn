@@ -736,3 +736,14 @@
         font-size: 18px;
     }
 }
+
+/* Inline Photo Upload Guidance */
+.upload-guidance-text {
+    max-width: 280px;
+    margin: 14px auto 0;
+    color: #888888;
+    font-size: 12px;
+    line-height: 1.6;
+    text-align: center;
+    font-weight: 400;
+}

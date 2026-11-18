@@ -18,9 +18,6 @@ function TryOnContent() {
   // Store the generation result message.
   const [generationMessage, setGenerationMessage] = useState("");
 
-  // Control the Photo Tips popup.
-  const [showPhotoTips, setShowPhotoTips] = useState(false);
-
   // Read selected product options from the URL.
   const searchParams = useSearchParams();
 
@@ -204,18 +201,14 @@ function TryOnContent() {
                 </label>
 
                 <span>PNG, JPG or JPEG</span>
+
+                <p className="upload-guidance-text">
+                  💡 Use a clear, well-lit photo. Keep your full body visible
+                  for clothing try-on.
+                </p>
               </>
             )}
           </div>
-
-          {/* Photo Tips Button */}
-          <button
-            type="button"
-            className="photo-tips-btn"
-            onClick={() => setShowPhotoTips(true)}
-          >
-            📸 Photo Tips
-          </button>
         </div>
 
         {/* Product preview section */}
@@ -255,52 +248,6 @@ function TryOnContent() {
           )}
         </div>
       </section>
-
-      {/* Photo Tips Popup */}
-      {showPhotoTips && (
-        <div
-          className="photo-tips-overlay"
-          onClick={() => setShowPhotoTips(false)}
-        >
-          <div
-            className="photo-tips-popup"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <div className="photo-tips-header">
-              <h2>📸 Photo Upload Tips</h2>
-
-              <button
-                type="button"
-                className="photo-tips-close"
-                onClick={() => setShowPhotoTips(false)}
-                aria-label="Close photo tips"
-              >
-                ×
-              </button>
-            </div>
-
-            <p className="photo-tips-description">
-              Follow these tips to get a better virtual try-on experience.
-            </p>
-
-            <ul className="photo-tips-list">
-              <li>Upload a clear, well-lit photo.</li>
-              <li>Keep your full body visible for clothing try-on.</li>
-              <li>Stand straight and face the camera.</li>
-              <li>Avoid objects covering your outfit.</li>
-              <li>Use a simple background for better results.</li>
-            </ul>
-
-            <button
-              type="button"
-              className="photo-tips-done-btn"
-              onClick={() => setShowPhotoTips(false)}
-            >
-              Got it
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* Try-On Confirmation Summary */}
       <section className="try-on-summary-section">
