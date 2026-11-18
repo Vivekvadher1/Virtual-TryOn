@@ -242,6 +242,19 @@ function TryOnContent() {
             </div>
           )}
         </div>
+
+        {/* Photo Upload Guidelines */}
+        <div className="photo-guidelines">
+          <h3>📸 Tips for a Better Try-On</h3>
+
+          <ul>
+            <li>Upload a clear, well-lit photo.</li>
+            <li>Keep your full body visible for clothing try-on.</li>
+            <li>Stand straight and face the camera.</li>
+            <li>Avoid objects covering your outfit.</li>
+            <li>Use a simple background for better results.</li>
+          </ul>
+        </div>
       </section>
 
       {/* Try-On Confirmation Summary */}
