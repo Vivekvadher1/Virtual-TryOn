@@ -50,6 +50,24 @@ function TryOnContent() {
     uploadedImage && selectedProduct && isSizeValid && isColorValid,
   );
 
+  // Determine the current Try-On status.
+  const tryOnStatus = isGenerating
+    ? "Generating your Try-On..."
+    : generationMessage
+      ? "Request prepared — AI integration pending"
+      : isReadyToGenerate
+        ? "Ready to generate"
+        : "Waiting for required details";
+
+  // Set a status class for styling.
+  const tryOnStatusClass = isGenerating
+    ? "generating"
+    : generationMessage
+      ? "prepared"
+      : isReadyToGenerate
+        ? "ready"
+        : "waiting";
+
   // Handle the selected image file.
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -288,6 +306,12 @@ function TryOnContent() {
 
       {/* Try-On Result Preview Section */}
       <section className="try-on-result-section">
+        {/* Try-On Status Indicator */}
+        <div className={`try-on-status ${tryOnStatusClass}`}>
+          <span className="status-dot"></span>
+          <p>{tryOnStatus}</p>
+        </div>
+
         <h2>Your Try-On Result</h2>
 
         <div className="try-on-comparison">
