@@ -74,25 +74,29 @@ export default function ExplorePage() {
         onCategoryChange={setSelectedCategory}
       />
 
-      <ProductSortDropdown
-        sortOption={sortOption}
-        onSortChange={setSortOption}
-      />
+      <div className="product-controls">
+        <ProductSearchBar
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
+        />
 
-      <ProductSearchBar
-        searchTerm={searchTerm}
-        onSearchChange={setSearchTerm}
-      />
+        <ProductSortDropdown
+          sortOption={sortOption}
+          onSortChange={setSortOption}
+        />
 
-      <button
-        type="button"
-        className="reset-filters-button"
-        onClick={handleResetFilters}
-      >
-        Reset Filters
-      </button>
+        <button
+          type="button"
+          className="reset-filters-button"
+          onClick={handleResetFilters}
+        >
+          Reset Filters
+        </button>
 
-      <p className="product-count">Showing {sortedProducts.length} products</p>
+        <p className="product-count">
+          Showing {sortedProducts.length} products
+        </p>
+      </div>
 
       {/* Dynamically filtered product collection */}
       <section className="product-listing-section">

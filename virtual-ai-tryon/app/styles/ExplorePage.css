@@ -35,6 +35,29 @@
     line-height: 1.7;
 }
 
+/* === Product Controls === */
+
+.product-controls {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+}
+
+/* Product Count */
+.product-count {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
 /* Tablet */
 @media (max-width: 768px) {
     .explore-header {
@@ -58,5 +81,27 @@
 
     .explore-description {
         font-size: 14px;
+    }
+}
+
+/* Product Controls - Mobile */
+@media (max-width: 768px) {
+    .product-controls {
+        gap: 12px;
+    }
+
+    .product-search {
+        max-width: none;
+        min-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .product-controls {
+        padding: 0 18px;
+    }
+
+    .product-sort {
+        flex-wrap: wrap;
     }
 }
