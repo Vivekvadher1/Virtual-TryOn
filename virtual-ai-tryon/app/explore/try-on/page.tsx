@@ -224,16 +224,29 @@ function TryOnContent() {
           <p className="generation-success-message">{generationMessage}</p>
         )}
 
-        {!uploadedImage && <p>Please upload your photo to continue.</p>}
+        {/* Display validation messages */}
+        {!uploadedImage && (
+          <p className="try-on-validation-message">
+            Please upload your photo to continue.
+          </p>
+        )}
 
-        {!selectedProduct && <p>Please select a product first.</p>}
+        {!selectedProduct && (
+          <p className="try-on-validation-message">
+            Please select a product first.
+          </p>
+        )}
 
         {selectedProduct && requiresSize && !isSizeValid && (
-          <p>Please select a valid product size.</p>
+          <p className="try-on-validation-message">
+            Please select a valid product size.
+          </p>
         )}
 
         {selectedProduct && requiresColor && !isColorValid && (
-          <p>Please select a valid product color.</p>
+          <p className="try-on-validation-message">
+            Please select a valid product color.
+          </p>
         )}
       </section>
 
