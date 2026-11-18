@@ -1,11 +1,14 @@
-/* Main Try-On page */
+/* =========================================
+   Main Try-On Page
+========================================= */
+
 .try-on-page {
     max-width: 1200px;
     margin: 0 auto;
     padding: 40px 24px 80px;
 }
 
-/* Page heading */
+/* Page Heading */
 .try-on-header {
     margin-bottom: 40px;
 }
@@ -24,14 +27,17 @@
     line-height: 1.7;
 }
 
-/* Main workspace */
+/* =========================================
+   Main Workspace
+========================================= */
+
 .try-on-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 30px;
 }
 
-/* Section headings */
+/* Section Headings */
 .try-on-upload h2,
 .try-on-product h2 {
     margin-bottom: 20px;
@@ -39,7 +45,10 @@
     color: #222;
 }
 
-/* Upload placeholder */
+/* =========================================
+   Photo Upload Section
+========================================= */
+
 .upload-placeholder,
 .selected-product-placeholder {
     min-height: 400px;
@@ -73,8 +82,9 @@
     line-height: 1.6;
 }
 
-/* Upload button */
+/* Upload Button */
 .upload-photo-btn {
+    display: inline-block;
     padding: 12px 25px;
     border: none;
     border-radius: 6px;
@@ -82,6 +92,7 @@
     color: #fff;
     font-size: 14px;
     font-weight: 600;
+    text-decoration: none;
     cursor: pointer;
 }
 
@@ -95,28 +106,18 @@
     font-size: 12px;
 }
 
-/* Mobile responsive layout */
-@media (max-width: 768px) {
-    .try-on-page {
-        padding: 25px 18px 50px;
-    }
-
-    .try-on-header h1 {
-        font-size: 28px;
-    }
-
-    .try-on-container {
-        grid-template-columns: 1fr;
-        gap: 35px;
-    }
-
-    .upload-placeholder,
-    .selected-product-placeholder {
-        min-height: 300px;
-    }
+/* Inline Photo Upload Guidance */
+.upload-guidance-text {
+    max-width: 280px;
+    margin: 14px auto 0;
+    color: #888;
+    font-size: 12px;
+    line-height: 1.6;
+    text-align: center;
+    font-weight: 400;
 }
 
-/* Uploaded photo preview */
+/* Uploaded Photo Preview */
 .uploaded-photo-preview {
     width: 100%;
     max-width: 280px;
@@ -126,14 +127,41 @@
     object-fit: contain;
 }
 
-/* Make the upload label look like a button */
-.upload-photo-btn {
-    display: inline-block;
-    text-decoration: none;
+/* Photo Action Buttons */
+.photo-action-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 15px;
 }
 
+.photo-action-buttons .upload-photo-btn {
+    margin: 0;
+}
 
-/* Selected product card */
+/* Remove Photo Button */
+.remove-photo-btn {
+    padding: 10px 18px;
+    border: 1px solid #dc5555;
+    border-radius: 6px;
+    background: white;
+    color: #dc5555;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.remove-photo-btn:hover {
+    background: #dc5555;
+    color: white;
+}
+
+/* =========================================
+   Selected Product Section
+========================================= */
+
 .selected-product-card {
     width: 100%;
     padding: 20px;
@@ -172,8 +200,10 @@
     font-weight: 700;
 }
 
+/* =========================================
+   Generate Try-On Section
+========================================= */
 
-/* Generate Try-On Section */
 .generate-try-on-section {
     display: flex;
     flex-direction: column;
@@ -183,7 +213,7 @@
     padding: 20px;
 }
 
-/* Generate Try-On Button */
+/* Generate Button */
 .generate-try-on-btn {
     padding: 14px 35px;
     border: none;
@@ -196,13 +226,12 @@
     transition: background 0.3s ease, transform 0.3s ease;
 }
 
-/* Enabled Button Hover */
 .generate-try-on-btn:not(:disabled):hover {
     background: #5535d5;
     transform: translateY(-2px);
 }
 
-/* Disabled Button */
+/* Disabled Generate Button */
 .generate-try-on-btn:disabled {
     background: #b8b8b8;
     color: #eeeeee;
@@ -211,15 +240,190 @@
 }
 
 /* Validation Messages */
-.generate-try-on-section p {
-    margin: 0;
+.try-on-validation-message {
     color: #d9534f;
+    background-color: #fff1f0;
+    border: 1px solid #f5c2c0;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-top: 12px;
     font-size: 14px;
     text-align: center;
 }
 
+/* Generation Success Message */
+.generation-success-message {
+    margin: 0;
+    color: #267a36;
+    font-size: 14px;
+    text-align: center;
+    line-height: 1.6;
+}
 
-/* Try-On Result Section */
+/* =========================================
+   Reset Try-On Button
+========================================= */
+
+.reset-try-on-btn {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 12px 24px;
+    background-color: #ffffff;
+    color: #d9534f;
+    border: 1px solid #d9534f;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.reset-try-on-btn:hover:not(:disabled) {
+    background-color: #d9534f;
+    color: #ffffff;
+}
+
+.reset-try-on-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* =========================================
+   Loading Spinner
+========================================= */
+
+.try-on-spinner {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 3px solid rgba(255, 255, 255, 0.4);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: tryOnSpin 0.8s linear infinite;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+@keyframes tryOnSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* =========================================
+   Try-On Confirmation Summary
+========================================= */
+
+.try-on-summary-section {
+    width: 100%;
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.try-on-summary-section h2 {
+    font-size: 24px;
+    margin-bottom: 18px;
+    text-align: center;
+}
+
+.try-on-summary-card {
+    background-color: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    padding: 22px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.try-on-summary-card p {
+    font-size: 15px;
+    color: #444;
+    margin: 12px 0;
+    line-height: 1.6;
+}
+
+.try-on-summary-card strong {
+    color: #222;
+}
+
+/* =========================================
+   Try-On Status Indicator
+========================================= */
+
+.try-on-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: fit-content;
+    margin: 25px auto;
+    padding: 10px 18px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.try-on-status p {
+    margin: 0;
+}
+
+.status-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+}
+
+/* Waiting Status */
+.try-on-status.waiting {
+    background-color: #fff3e0;
+    color: #a65b00;
+}
+
+.try-on-status.waiting .status-dot {
+    background-color: #f0a12b;
+}
+
+/* Ready Status */
+.try-on-status.ready {
+    background-color: #e8f5e9;
+    color: #267a36;
+}
+
+.try-on-status.ready .status-dot {
+    background-color: #35a853;
+}
+
+/* Generating Status */
+.try-on-status.generating {
+    background-color: #e8f0fe;
+    color: #2457a6;
+}
+
+.try-on-status.generating .status-dot {
+    background-color: #4285f4;
+    animation: statusPulse 1s infinite;
+}
+
+/* Prepared Status */
+.try-on-status.prepared {
+    background-color: #f0eaff;
+    color: #6941a5;
+}
+
+.try-on-status.prepared .status-dot {
+    background-color: #8255c5;
+}
+
+@keyframes statusPulse {
+    50% {
+        opacity: 0.3;
+    }
+}
+
+/* =========================================
+   Try-On Result Section
+========================================= */
+
 .try-on-result-section {
     width: 100%;
     max-width: 800px;
@@ -234,41 +438,7 @@
     color: #222;
 }
 
-.try-on-result-card {
-    min-height: 320px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 30px;
-    border: 2px dashed #c9c2e8;
-    border-radius: 14px;
-    background: #faf9ff;
-}
-
-.result-placeholder {
-    max-width: 450px;
-    text-align: center;
-}
-
-.result-placeholder-icon {
-    margin-bottom: 15px;
-    font-size: 48px;
-}
-
-.result-placeholder h3 {
-    margin-bottom: 10px;
-    color: #333;
-    font-size: 20px;
-}
-
-.result-placeholder p {
-    color: #777;
-    font-size: 15px;
-    line-height: 1.6;
-}
-
-
-/* Before and After Comparison Layout */
+/* Before and After Comparison */
 .try-on-comparison {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -292,7 +462,7 @@
     text-align: center;
 }
 
-/* Image Containers */
+/* Comparison Image Containers */
 .comparison-image {
     width: 100%;
     height: 350px;
@@ -332,20 +502,10 @@
     line-height: 1.6;
 }
 
-/* Mobile Responsive Layout */
-@media (max-width: 650px) {
-    .try-on-comparison {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
+/* =========================================
+   Download Result Section
+========================================= */
 
-    .comparison-image {
-        height: 300px;
-    }
-}
-
-
-/* Download Result Section */
 .download-result-section {
     display: flex;
     flex-direction: column;
@@ -373,377 +533,37 @@
     text-align: center;
 }
 
+/* =========================================
+   Responsive Layout
+========================================= */
 
-/* Photo Action Buttons */
-.photo-action-buttons {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-top: 15px;
-}
+@media (max-width: 768px) {
+    .try-on-page {
+        padding: 25px 18px 50px;
+    }
 
-.photo-action-buttons .upload-photo-btn {
-    margin: 0;
-}
+    .try-on-header h1 {
+        font-size: 28px;
+    }
 
-/* Remove Photo Button */
-.remove-photo-btn {
-    padding: 10px 18px;
-    border: 1px solid #dc5555;
-    border-radius: 6px;
-    background: white;
-    color: #dc5555;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
+    .try-on-container {
+        grid-template-columns: 1fr;
+        gap: 35px;
+    }
 
-.remove-photo-btn:hover {
-    background: #dc5555;
-    color: white;
-}
-
-/* Try-On validation messages */
-.try-on-validation-message {
-    color: #d9534f;
-    background-color: #fff1f0;
-    border: 1px solid #f5c2c0;
-    border-radius: 8px;
-    padding: 10px 14px;
-    margin-top: 12px;
-    font-size: 14px;
-    text-align: center;
-}
-
-/* Try-On Confirmation Summary */
-.try-on-summary-section {
-    width: 100%;
-    max-width: 700px;
-    margin: 40px auto;
-    padding: 0 20px;
-}
-
-.try-on-summary-section h2 {
-    font-size: 24px;
-    margin-bottom: 18px;
-    text-align: center;
-}
-
-.try-on-summary-card {
-    background-color: #ffffff;
-    border: 1px solid #e5e5e5;
-    border-radius: 12px;
-    padding: 22px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-
-.try-on-summary-card p {
-    font-size: 15px;
-    color: #444;
-    margin: 12px 0;
-    line-height: 1.6;
-}
-
-.try-on-summary-card strong {
-    color: #222;
-}
-
-/* Try-On loading spinner */
-.try-on-spinner {
-    display: inline-block;
-    width: 18px;
-    height: 18px;
-    border: 3px solid rgba(255, 255, 255, 0.4);
-    border-top-color: #ffffff;
-    border-radius: 50%;
-    animation: tryOnSpin 0.8s linear infinite;
-    vertical-align: middle;
-    margin-right: 8px;
-}
-
-@keyframes tryOnSpin {
-    to {
-        transform: rotate(360deg);
+    .upload-placeholder,
+    .selected-product-placeholder {
+        min-height: 300px;
     }
 }
 
-/* Try-On Status Indicator */
-.try-on-status {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: fit-content;
-    margin: 25px auto;
-    padding: 10px 18px;
-    border-radius: 30px;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.try-on-status p {
-    margin: 0;
-}
-
-.status-dot {
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-}
-
-/* Waiting for required details */
-.try-on-status.waiting {
-    background-color: #fff3e0;
-    color: #a65b00;
-}
-
-.try-on-status.waiting .status-dot {
-    background-color: #f0a12b;
-}
-
-/* Ready to generate */
-.try-on-status.ready {
-    background-color: #e8f5e9;
-    color: #267a36;
-}
-
-.try-on-status.ready .status-dot {
-    background-color: #35a853;
-}
-
-/* Generating */
-.try-on-status.generating {
-    background-color: #e8f0fe;
-    color: #2457a6;
-}
-
-.try-on-status.generating .status-dot {
-    background-color: #4285f4;
-    animation: statusPulse 1s infinite;
-}
-
-/* Request prepared */
-.try-on-status.prepared {
-    background-color: #f0eaff;
-    color: #6941a5;
-}
-
-.try-on-status.prepared .status-dot {
-    background-color: #8255c5;
-}
-
-@keyframes statusPulse {
-    50% {
-        opacity: 0.3;
-    }
-}
-
-/* Reset Try-On Button */
-.reset-try-on-btn {
-    display: inline-block;
-    margin-top: 15px;
-    padding: 12px 24px;
-    background-color: #ffffff;
-    color: #d9534f;
-    border: 1px solid #d9534f;
-    border-radius: 8px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.reset-try-on-btn:hover:not(:disabled) {
-    background-color: #d9534f;
-    color: #ffffff;
-}
-
-.reset-try-on-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-/* Photo Upload Guidelines */
-.photo-guidelines {
-    margin-top: 25px;
-    padding: 20px;
-    background-color: #f8f9fc;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-}
-
-.photo-guidelines h3 {
-    margin-bottom: 15px;
-    font-size: 18px;
-    color: #222;
-}
-
-.photo-guidelines ul {
-    padding-left: 22px;
-    margin: 0;
-}
-
-.photo-guidelines li {
-    margin-bottom: 10px;
-    color: #555;
-    font-size: 14px;
-    line-height: 1.6;
-}
-
-.photo-guidelines li:last-child {
-    margin-bottom: 0;
-}
-
-/* Photo Tips Button */
-.photo-tips-btn {
-    display: block;
-    margin: 15px auto 0;
-    padding: 10px 18px;
-    background: #f5f3ff;
-    color: #6941a5;
-    border: 1px solid #ded5f5;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.photo-tips-btn:hover {
-    background: #6941a5;
-    color: #ffffff;
-}
-
-/* Popup Background Overlay */
-.photo-tips-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.55);
-    backdrop-filter: blur(4px);
-}
-
-/* Popup Card */
-.photo-tips-popup {
-    width: 100%;
-    max-width: 450px;
-    padding: 28px;
-    background: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.2);
-    animation: photoTipsAppear 0.25s ease;
-}
-
-/* Popup Header */
-.photo-tips-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-}
-
-.photo-tips-header h2 {
-    margin: 0;
-    font-size: 21px;
-    color: #222222;
-}
-
-/* Close Button */
-.photo-tips-close {
-    width: 32px;
-    height: 32px;
-    border: none;
-    border-radius: 50%;
-    background: #f1f1f1;
-    color: #333333;
-    font-size: 24px;
-    cursor: pointer;
-}
-
-.photo-tips-close:hover {
-    background: #e5e5e5;
-}
-
-/* Popup Description */
-.photo-tips-description {
-    margin: 16px 0;
-    color: #666666;
-    font-size: 14px;
-    line-height: 1.6;
-}
-
-/* Tips List */
-.photo-tips-list {
-    padding-left: 22px;
-    margin: 18px 0 24px;
-}
-
-.photo-tips-list li {
-    margin-bottom: 13px;
-    color: #444444;
-    font-size: 14px;
-    line-height: 1.5;
-}
-
-.photo-tips-list li:last-child {
-    margin-bottom: 0;
-}
-
-/* Got It Button */
-.photo-tips-done-btn {
-    width: 100%;
-    padding: 12px;
-    background: #6941a5;
-    color: #ffffff;
-    border: none;
-    border-radius: 8px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-.photo-tips-done-btn:hover {
-    background: #543286;
-}
-
-/* Popup Animation */
-@keyframes photoTipsAppear {
-    from {
-        opacity: 0;
-        transform: translateY(12px) scale(0.97);
+@media (max-width: 650px) {
+    .try-on-comparison {
+        grid-template-columns: 1fr;
+        gap: 20px;
     }
 
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
+    .comparison-image {
+        height: 300px;
     }
-}
-
-/* Mobile Popup */
-@media (max-width: 480px) {
-    .photo-tips-popup {
-        padding: 22px;
-    }
-
-    .photo-tips-header h2 {
-        font-size: 18px;
-    }
-}
-
-/* Inline Photo Upload Guidance */
-.upload-guidance-text {
-    max-width: 280px;
-    margin: 14px auto 0;
-    color: #888888;
-    font-size: 12px;
-    line-height: 1.6;
-    text-align: center;
-    font-weight: 400;
 }

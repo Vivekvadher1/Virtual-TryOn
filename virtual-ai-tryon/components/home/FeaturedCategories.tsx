@@ -20,40 +20,44 @@ export default function FeaturedCategories() {
       <div className="categories-grid">
         <Link href="/explore?category=clothing" className="category-card">
           <Image
-            src="/images/clothing.png"
+            src="/images/Clothing/clothing.png"
             alt="Fashion clothing collection"
-            width={400}
-            height={500}
+            fill
+            sizes="(max-width: 600px) 90vw, (max-width: 1024px) 45vw, 22vw"
+            loading="eager"
           />
           <h3>Clothing</h3>
         </Link>
 
         <Link href="/explore?category=shoes" className="category-card">
           <Image
-            src="/images/shoes.png"
+            src="/images/Shoes/shoes.png"
             alt="Fashion shoes collection"
-            width={400}
-            height={500}
+            fill
+            sizes="(max-width: 600px) 90vw, (max-width: 1024px) 45vw, 22vw"
+            loading="eager"
           />
           <h3>Shoes</h3>
         </Link>
 
         <Link href="/explore?category=bags" className="category-card">
           <Image
-            src="/images/bags.png"
+            src="/images/Bags/bags.png"
             alt="Fashion bags collection"
-            width={400}
-            height={500}
+            fill
+            sizes="(max-width: 600px) 90vw, (max-width: 1024px) 45vw, 22vw"
+            loading="eager"
           />
           <h3>Bags</h3>
         </Link>
 
         <Link href="/explore?category=accessories" className="category-card">
           <Image
-            src="/images/accessories.png"
+            src="/images/Accessories/accessories.png"
             alt="Fashion accessories collection"
-            width={400}
-            height={500}
+            fill
+            sizes="(max-width: 600px) 90vw, (max-width: 1024px) 45vw, 22vw"
+            loading="eager"
           />
           <h3>Accessories</h3>
         </Link>
