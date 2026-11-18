@@ -416,3 +416,36 @@
     font-size: 14px;
     text-align: center;
 }
+
+/* Try-On Confirmation Summary */
+.try-on-summary-section {
+    width: 100%;
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.try-on-summary-section h2 {
+    font-size: 24px;
+    margin-bottom: 18px;
+    text-align: center;
+}
+
+.try-on-summary-card {
+    background-color: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    padding: 22px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.try-on-summary-card p {
+    font-size: 15px;
+    color: #444;
+    margin: 12px 0;
+    line-height: 1.6;
+}
+
+.try-on-summary-card strong {
+    color: #222;
+}

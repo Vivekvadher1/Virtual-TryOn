@@ -209,6 +209,35 @@ function TryOnContent() {
         </div>
       </section>
 
+      {/* Try-On Confirmation Summary */}
+      <section className="try-on-summary-section">
+        <h2>Review Your Try-On</h2>
+
+        <div className="try-on-summary-card">
+          <p>
+            <strong>Photo:</strong>{" "}
+            {uploadedImage ? "Photo uploaded" : "No photo uploaded"}
+          </p>
+
+          <p>
+            <strong>Product:</strong>{" "}
+            {selectedProduct ? selectedProduct.name : "No product selected"}
+          </p>
+
+          {requiresSize && (
+            <p>
+              <strong>Size:</strong> {selectedSize || "Not selected"}
+            </p>
+          )}
+
+          {requiresColor && (
+            <p>
+              <strong>Color:</strong> {selectedColor || "Not selected"}
+            </p>
+          )}
+        </div>
+      </section>
+
       {/* Generate Try-On section */}
       <section className="generate-try-on-section">
         <button
