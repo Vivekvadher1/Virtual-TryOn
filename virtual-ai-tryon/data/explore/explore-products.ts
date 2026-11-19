@@ -65,7 +65,7 @@ export const exploreProducts: ExploreProduct[] = [
     name: "Premium Fashion Shoes",
     category: "Shoes",
     price: 2499,
-    image: "/images/Shoes/Shoes-1.png",
+    image: "/images/Shoes/Premium Fashion Shoes.png",
     description:
       "Stylish everyday shoes that combine a modern appearance with comfort.",
     sizes: ["6", "7", "8", "9", "10", "11"],
@@ -87,7 +87,7 @@ export const exploreProducts: ExploreProduct[] = [
     name: "Casual Leather Loafers",
     category: "Shoes",
     price: 2199,
-    image: "/images/Shoes/shoes.png",
+    image: "/images/Shoes/Casual Leather Loafers.png",
     description:
       "Elegant loafers that bring a refined look to casual and smart outfits.",
     sizes: ["6", "7", "8", "9", "10", "11"],
@@ -98,7 +98,7 @@ export const exploreProducts: ExploreProduct[] = [
     name: "Sport Running Shoes",
     category: "Shoes",
     price: 1899,
-    image: "/images/Shoes/shoes.png",
+    image: "/images/Shoes/Sport Running Shoes.png",
     description:
       "Lightweight running shoes designed for active days and everyday movement.",
     sizes: ["6", "7", "8", "9", "10", "11"],
@@ -111,7 +111,7 @@ export const exploreProducts: ExploreProduct[] = [
     name: "Elegant Handbag",
     category: "Bags",
     price: 2999,
-    image: "/images/Bags/bags.png",
+    image: "/images/Bags/Elegant Handbag.png",
     description:
       "A stylish handbag that complements both everyday and special-occasion outfits.",
     colors: ["Beige", "Black", "Brown"],
@@ -121,7 +121,7 @@ export const exploreProducts: ExploreProduct[] = [
     name: "Everyday Travel Backpack",
     category: "Bags",
     price: 1599,
-    image: "/images/Bags/bags.png",
+    image: "/images/Bags/Everyday Travel Backpack.png",
     description:
       "A practical backpack designed to carry your essentials while travelling or commuting.",
     colors: ["Beige", "Black", "Brown"],
@@ -131,7 +131,7 @@ export const exploreProducts: ExploreProduct[] = [
     name: "Minimalist Tote Bag",
     category: "Bags",
     price: 1299,
-    image: "/images/Bags/bags.png",
+    image: "/images/Bags/Minimalist Tote Bag.png",
     description: "A simple and spacious tote bag for everyday use.",
     colors: ["Beige", "Black", "Brown"],
   },
@@ -140,7 +140,7 @@ export const exploreProducts: ExploreProduct[] = [
     name: "Premium Crossbody Bag",
     category: "Bags",
     price: 2399,
-    image: "/images/Bags/bags.png",
+    image: "/images/Bags/Premium Crossbody Bag.png",
     description:
       "A modern crossbody bag offering a convenient and stylish carrying option.",
     colors: ["Beige", "Black", "Brown"],
@@ -152,7 +152,7 @@ export const exploreProducts: ExploreProduct[] = [
     name: "Stylish Accessories",
     category: "Accessories",
     price: 999,
-    image: "/images/Accessories/accessories.png",
+    image: "/images/Accessories/Stylish Accessories.png",
     description:
       "A versatile accessory designed to add a finishing touch to your personal style.",
     colors: ["Gold", "Black", "Silver"],
@@ -162,7 +162,7 @@ export const exploreProducts: ExploreProduct[] = [
     name: "Classic Black Sunglasses",
     category: "Accessories",
     price: 799,
-    image: "/images/Accessories/accessories.png",
+    image: "/images/Accessories/Classic Black Sunglasses.png",
     description:
       "Classic black sunglasses that add a bold touch to your everyday look.",
     colors: ["Gold", "Black", "Silver"],
@@ -172,7 +172,7 @@ export const exploreProducts: ExploreProduct[] = [
     name: "Premium Wrist Watch",
     category: "Accessories",
     price: 1999,
-    image: "/images/Accessories/accessories.png",
+    image: "/images/Accessories/Premium Wrist Watch.png",
     description:
       "A sophisticated wrist watch that complements both casual and formal outfits.",
     colors: ["Gold", "Black", "Silver"],
@@ -182,7 +182,7 @@ export const exploreProducts: ExploreProduct[] = [
     name: "Casual Baseball Cap",
     category: "Accessories",
     price: 599,
-    image: "/images/Accessories/accessories.png",
+    image: "/images/Accessories/Casual Cap.png",
     description:
       "A comfortable baseball cap that adds a relaxed finish to casual outfits.",
     colors: ["Gold", "Black", "Silver"],

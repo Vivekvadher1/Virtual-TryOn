@@ -35,9 +35,16 @@ const productSchema = new mongoose.Schema(
       min: 0,
     },
 
-    // Product image URL
-    // Later, this will contain the Cloudinary image URL.
+    // Product image URL from Cloudinary.
+    // The frontend will use this URL to display the image.
     image: {
+      type: String,
+      required: true,
+    },
+
+    // Cloudinary public ID.
+    // Used later when replacing or deleting product images.
+    imagePublicId: {
       type: String,
       required: true,
     },

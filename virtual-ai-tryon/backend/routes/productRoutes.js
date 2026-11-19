@@ -26,8 +26,16 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     // Extract product information from the request body.
-    const { name, category, price, image, description, sizes, colors } =
-      req.body;
+    const {
+      name,
+      category,
+      price,
+      image,
+      imagePublicId,
+      description,
+      sizes,
+      colors,
+    } = req.body;
 
     // Create a new product document using the Product model.
     const newProduct = await Product.create({
@@ -35,6 +43,7 @@ router.post("/", async (req, res) => {
       category,
       price,
       image,
+      imagePublicId,
       description,
       sizes,
       colors,
