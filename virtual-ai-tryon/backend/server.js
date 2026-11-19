@@ -1,4 +1,3 @@
-
 // ==========================================
 // 1. IMPORT REQUIRED PACKAGES
 // ==========================================
@@ -18,12 +17,14 @@ const connectDB = require("./config/db");
 // Import product API routes.
 const productRoutes = require("./routes/productRoutes");
 
+// Import Cloudinary configuration.
+const cloudinary = require("./config/cloudinary");
+
 // ==========================================
 // 2. INITIALIZE EXPRESS APPLICATION
 // ==========================================
 
 const app = express();
-
 
 // ==========================================
 // 3. CONFIGURE MIDDLEWARE
@@ -48,6 +49,32 @@ app.get("/", (req, res) => {
   res.send("Virtual AI Try-On Studio Backend is Running!");
 });
 
+// ==========================================
+// TEST CLOUDINARY CONNECTION
+// ==========================================
+
+app.get("/api/test-cloudinary", async (req, res) => {
+  try {
+    // Request account information from Cloudinary.
+    const result = await cloudinary.api.ping();
+
+    // Send successful response.
+    res.status(200).json({
+      success: true,
+      message: "Cloudinary connected successfully!",
+      status: result.status,
+    });
+  } catch (error) {
+    // Handle connection errors.
+    console.error("Cloudinary connection error:", error.message);
+
+    res.status(500).json({
+      success: false,
+      message: "Cloudinary connection failed.",
+      error: error.message,
+    });
+  }
+});
 
 // ==========================================
 // 5. START SERVER AFTER DATABASE CONNECTION

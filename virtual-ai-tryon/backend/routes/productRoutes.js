@@ -21,4 +21,39 @@ router.get("/", async (req, res) => {
   }
 });
 
+// POST /api/products
+// Receive product information and save it in MongoDB.
+router.post("/", async (req, res) => {
+  try {
+    // Extract product information from the request body.
+    const { name, category, price, image, description, sizes, colors } =
+      req.body;
+
+    // Create a new product document using the Product model.
+    const newProduct = await Product.create({
+      name,
+      category,
+      price,
+      image,
+      description,
+      sizes,
+      colors,
+    });
+
+    // Send a success response with the newly created product.
+    res.status(201).json({
+      success: true,
+      message: "Product created successfully",
+      data: newProduct,
+    });
+  } catch (error) {
+    // Handle validation errors and other database errors.
+    res.status(400).json({
+      success: false,
+      message: "Failed to create product",
+      error: error.message,
+    });
+  }
+});
+
 module.exports = router;
