@@ -19,6 +19,4 @@ cloudinary.config({
   debug: true,
 });
 
-console.log("Cloudinary Cloud Name:", cloudName);
-
 module.exports = cloudinary;

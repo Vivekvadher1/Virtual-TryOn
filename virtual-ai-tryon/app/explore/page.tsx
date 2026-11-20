@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import ProductCard from "@/components/explore/ProductCard";
 import ProductCategoryFilter from "@/components/explore/ProductCategoryFilter";
 
-import { exploreProducts } from "@/data/explore/explore-products";
+import type { Product, ProductsApiResponse } from "@/types/product";
 import ProductSortDropdown from "@/components/explore/ProductSortDropdown";
 import ProductSearchBar from "@/components/explore/ProductSearchBar";
 
@@ -17,6 +17,55 @@ export default function ExplorePage() {
   // Stores the user's product search query.
   const [searchTerm, setSearchTerm] = useState("");
 
+  // Stores products received from the backend.
+  const [products, setProducts] = useState<Product[]>([]);
+
+  // Tracks whether products are being fetched.
+  const [loading, setLoading] = useState(true);
+
+  // Stores any error that occurs during API fetching.
+  const [error, setError] = useState("");
+
+  // Fetches products from the Express backend when the page loads.
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        setError("");
+
+        const response = await fetch("http://localhost:5000/api/products");
+
+        // Check whether the API request was successful.
+        if (!response.ok) {
+          throw new Error("Failed to fetch products.");
+        }
+
+        // Convert the API response into JSON.
+        const result: ProductsApiResponse = await response.json();
+
+        // Check the backend response.
+        if (!result.success) {
+          throw new Error("Unable to load products.");
+        }
+
+        // Store the products received from MongoDB.
+        setProducts(result.data);
+      } catch (err) {
+        console.error("Product fetching error:", err);
+
+        setError(
+          err instanceof Error
+            ? err.message
+            : "Something went wrong while loading products.",
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   // Resets all product filters and sorting options.
   const handleResetFilters = () => {
     setSelectedCategory("All");
@@ -25,7 +74,7 @@ export default function ExplorePage() {
   };
 
   // Filters products based on the selected category and search term.
-  const filteredProducts = exploreProducts.filter((product) => {
+  const filteredProducts = products.filter((product) => {
     const matchesCategory =
       selectedCategory === "All" || product.category === selectedCategory;
 
@@ -100,24 +149,30 @@ export default function ExplorePage() {
 
       {/* Dynamically filtered product collection */}
       <section className="product-listing-section">
-        <div className="product-listing-grid">
-          {sortedProducts.length > 0 ? (
-            sortedProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                id={product.id}
-                name={product.name}
-                category={product.category}
-                price={product.price}
-                image={product.image}
-              />
-            ))
-          ) : (
-            <p className="empty-products-message">
-              No products found. Try a different search or category.
-            </p>
-          )}
-        </div>
+        {loading ? (
+          <p className="loading-products-message">Loading products...</p>
+        ) : error ? (
+          <p className="empty-products-message">{error}</p>
+        ) : (
+          <div className="product-listing-grid">
+            {sortedProducts.length > 0 ? (
+              sortedProducts.map((product) => (
+                <ProductCard
+                  key={product._id}
+                  id={product._id}
+                  name={product.name}
+                  category={product.category}
+                  price={product.price}
+                  image={product.image}
+                />
+              ))
+            ) : (
+              <p className="empty-products-message">
+                No products found. Try a different search or category.
+              </p>
+            )}
+          </div>
+        )}
       </section>
     </main>
   );
