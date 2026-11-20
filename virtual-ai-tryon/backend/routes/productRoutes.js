@@ -1,4 +1,5 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const Product = require("../models/product");
 
 const router = express.Router();
@@ -16,6 +17,46 @@ router.get("/", async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to fetch products",
+      error: error.message,
+    });
+  }
+});
+
+// GET /api/products/:id
+// Fetch a single product using its MongoDB ID.
+router.get("/:id", async (req, res) => {
+  try {
+    // Extract the product ID from the URL.
+    const { id } = req.params;
+
+    // Check whether the ID is a valid MongoDB ObjectId.
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid product ID",
+      });
+    }
+
+    // Find the product using its MongoDB ID.
+    const product = await Product.findById(id);
+
+    // Check whether the product exists.
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+
+    // Return the requested product.
+    res.status(200).json({
+      success: true,
+      data: product,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch product",
       error: error.message,
     });
   }

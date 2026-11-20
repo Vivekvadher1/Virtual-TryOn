@@ -1,11 +1,14 @@
 "use client";
 
-import { use, useState, Suspense } from "react";
+import { use, useState, Suspense, useEffect } from "react";
 
 import Image from "next/image";
 import Link from "next/link";
 
-import { exploreProducts } from "@/data/explore/explore-products";
+import type { Product } from "@/types/product";
+
+// Shared key used by the Product Details and Wishlist pages.
+const WISHLIST_KEY = "wishlist";
 
 interface ProductDetailsPageProps {
   params: Promise<{
@@ -29,26 +32,132 @@ function ProductDetails({ params }: ProductDetailsPageProps) {
   // Unwrap the params Promise
   const { id } = use(params);
 
+  // Stores the product received from the backend.
+  const [product, setProduct] = useState<Product | null>(null);
+
+  // Tracks whether the product is being fetched.
+  const [loading, setLoading] = useState(true);
+
+  // Stores any API fetching error.
+  const [error, setError] = useState("");
+
   // Store the selected size
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+
   // Store the color selected by the customer.
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
+
   // Track whether the current product is in the wishlist.
   const [isWishlisted, setIsWishlisted] = useState(false);
 
-  // Convert URL ID into a number
-  const productId = Number(id);
+  // Fetches the selected product from the backend.
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        setLoading(true);
+        setError("");
 
-  // Find matching product
-  const product = exploreProducts.find((item) => item.id === productId);
+        // Request the selected product using its MongoDB ID.
+        const response = await fetch(
+          `http://localhost:5000/api/products/${id}`,
+        );
 
-  // Product not found
+        // Handle unsuccessful API responses.
+        if (!response.ok) {
+          if (response.status === 404) {
+            throw new Error("Product not found.");
+          }
+
+          throw new Error("Failed to fetch product details.");
+        }
+
+        // Convert the API response into JSON.
+        const result: { success: boolean; data: Product } =
+          await response.json();
+
+        // Check the backend response.
+        if (!result.success) {
+          throw new Error("Unable to load product details.");
+        }
+
+        // Store the selected product.
+        setProduct(result.data);
+      } catch (err) {
+        console.error("Product fetching error:", err);
+
+        setError(err instanceof Error ? err.message : "Something went wrong.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [id]);
+
+  // Check whether the current product is already in the wishlist.
+  useEffect(() => {
+    if (!product) return;
+
+    const savedWishlist = localStorage.getItem(WISHLIST_KEY);
+
+    const wishlistIds: string[] = savedWishlist
+      ? JSON.parse(savedWishlist)
+      : [];
+
+    setIsWishlisted(wishlistIds.includes(product._id));
+  }, [product]);
+
+  // Add or remove the current product from the wishlist.
+  const toggleWishlist = () => {
+    if (!product) return;
+
+    const savedWishlist = localStorage.getItem(WISHLIST_KEY);
+
+    const wishlistIds: string[] = savedWishlist
+      ? JSON.parse(savedWishlist)
+      : [];
+
+    let updatedWishlist: string[];
+
+    if (wishlistIds.includes(product._id)) {
+      // Remove product if it already exists.
+      updatedWishlist = wishlistIds.filter((id) => id !== product._id);
+    } else {
+      // Add product if it is not already saved.
+      updatedWishlist = [...wishlistIds, product._id];
+    }
+
+    localStorage.setItem(WISHLIST_KEY, JSON.stringify(updatedWishlist));
+
+    setIsWishlisted(updatedWishlist.includes(product._id));
+  };
+
+  // Display loading message while fetching the product.
+  if (loading) {
+    return (
+      <main className="product-not-found">
+        <p>Loading product details...</p>
+      </main>
+    );
+  }
+
+  // Display error message if the API request fails.
+  if (error) {
+    return (
+      <main className="product-not-found">
+        <h1>Unable to Load Product</h1>
+        <p>{error}</p>
+        <Link href="/explore">Back to Explore</Link>
+      </main>
+    );
+  }
+
+  // Display message if the product doesn't exist.
   if (!product) {
     return (
       <main className="product-not-found">
         <h1>Product Not Found</h1>
         <p>Sorry, we couldn't find this product.</p>
-
         <Link href="/explore">Back to Explore</Link>
       </main>
     );
@@ -134,7 +243,7 @@ function ProductDetails({ params }: ProductDetailsPageProps) {
           <button
             type="button"
             className={`product-wishlist-btn ${isWishlisted ? "active" : ""}`}
-            onClick={() => setIsWishlisted(!isWishlisted)}
+            onClick={toggleWishlist}
             aria-pressed={isWishlisted}
           >
             {isWishlisted ? "♥ Added to Wishlist" : "♡ Add to Wishlist"}
@@ -142,7 +251,7 @@ function ProductDetails({ params }: ProductDetailsPageProps) {
 
           {/* Navigate to Try-On with the selected product options */}
           <Link
-            href={`/explore/try-on?productId=${product.id}&size=${encodeURIComponent(selectedSize ?? "")}&color=${encodeURIComponent(selectedColor ?? "")}`}
+            href={`/explore/try-on?productId=${product._id}&size=${encodeURIComponent(selectedSize ?? "")}&color=${encodeURIComponent(selectedColor ?? "")}`}
             className="product-try-on-btn"
           >
             Try On
