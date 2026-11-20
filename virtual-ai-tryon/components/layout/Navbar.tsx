@@ -34,6 +34,10 @@ export default function Navbar() {
           About
         </Link>
 
+        <Link href="/wishlist" onClick={() => setMenuOpen(false)}>
+          ♡ Wishlist
+        </Link>
+
         <Link
           href="/login"
           className="mobile-login"
