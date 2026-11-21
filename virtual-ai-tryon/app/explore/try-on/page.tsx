@@ -31,6 +31,11 @@ function TryOnContent() {
   // Store the generation result message.
   const [generationMessage, setGenerationMessage] = useState("");
 
+  // Store the AI-generated try-on image URL.
+  const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(
+    null,
+  );
+
   // Stores the selected product fetched from MongoDB.
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
@@ -223,19 +228,55 @@ function TryOnContent() {
     }
   };
 
-  // Simulate the Try-On generation process.
-  const handleGenerateTryOn = () => {
-    if (!isReadyToGenerate) return;
+  // Handle real AI Try-On generation.
+  const handleGenerateTryOn = async () => {
+    if (!isReadyToGenerate || !uploadedPhotoUrl || !selectedProduct) return;
 
     setIsGenerating(true);
     setGenerationMessage("");
+    setGeneratedImageUrl(null);
 
-    setTimeout(() => {
-      setIsGenerating(false);
+    try {
+      // Send the uploaded photo and selected product to the backend.
+      const response = await fetch("http://localhost:5000/api/tryon", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          personImageUrl: uploadedPhotoUrl,
+          garmentImageUrl: selectedProduct.image,
+          garmentDescription: selectedProduct.category,
+        }),
+      });
+
+      const result = await response.json();
+
+      // Check whether the backend generated the image successfully.
+      if (!response.ok || !result.success || !result.imageUrl) {
+        throw new Error(result.message || "Virtual Try-On generation failed.");
+      }
+
+      // Store the generated image URL.
+      setGeneratedImageUrl(result.imageUrl);
+
       setGenerationMessage(
-        "Your Try-On request is ready! AI integration will be added later.",
+        "Your virtual try-on has been generated successfully!",
       );
-    }, 2000);
+
+      console.log("Generated Try-On Image:", result.imageUrl);
+      console.log("Masked Image:", result.maskedImage);
+    } catch (error) {
+      console.error("Try-On generation error:", error);
+
+      setGenerationMessage(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong while generating your Try-On.",
+      );
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   // Reset the current Try-On session.
@@ -532,15 +573,23 @@ function TryOnContent() {
             <h3>Virtual Try-On Result</h3>
 
             <div className="comparison-image">
-              <div className="comparison-placeholder">
-                <span>✨</span>
+              {generatedImageUrl ? (
+                <img
+                  src={generatedImageUrl}
+                  alt="AI-generated virtual try-on result"
+                  className="uploaded-photo-preview"
+                />
+              ) : (
+                <div className="comparison-placeholder">
+                  <span>✨</span>
 
-                <p>
-                  {generationMessage
-                    ? "Your AI-generated image will appear here after integration."
-                    : "Your virtual try-on result will appear here."}
-                </p>
-              </div>
+                  <p>
+                    {isGenerating
+                      ? "Generating your virtual try-on..."
+                      : "Your virtual try-on result will appear here."}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -548,11 +597,46 @@ function TryOnContent() {
 
       {/* Download Try-On Result */}
       <div className="download-result-section">
-        <button type="button" className="download-result-btn" disabled>
+        <button
+          type="button"
+          className="download-result-btn"
+          disabled={!generatedImageUrl}
+          onClick={async () => {
+            if (!generatedImageUrl) return;
+
+            try {
+              const response = await fetch(generatedImageUrl);
+
+              if (!response.ok) {
+                throw new Error("Unable to download the generated image.");
+              }
+
+              const blob = await response.blob();
+              const downloadUrl = URL.createObjectURL(blob);
+
+              const link = document.createElement("a");
+              link.href = downloadUrl;
+              link.download = "virtual-ai-tryon-result.png";
+
+              document.body.appendChild(link);
+              link.click();
+              link.remove();
+
+              URL.revokeObjectURL(downloadUrl);
+            } catch (error) {
+              console.error("Image download error:", error);
+              alert("Unable to download the image. Please try again.");
+            }
+          }}
+        >
           ↓ Download Try-On Result
         </button>
 
-        <p>Download will be available once AI image generation is connected.</p>
+        <p>
+          {generatedImageUrl
+            ? "Your generated Try-On image is ready to download."
+            : "Generate your virtual try-on first to download the result."}
+        </p>
       </div>
     </main>
   );

@@ -252,6 +252,7 @@
   font-size: 14px;
   line-height: 1.5;
 }
+
 .selected-product-info h4 {
   margin: 12px 0;
   background: var(--gradient-accent-text);
@@ -619,11 +620,25 @@
   padding: 13px 30px;
   border: none;
   border-radius: 10px;
-  background: #d4d4d8;
-  color: #71717a;
+  background: var(--gradient-primary);
+  color: #ffffff;
   font-size: 15px;
   font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.download-result-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-violet-md);
+}
+
+.download-result-btn:disabled {
+  background: #d4d4d8;
+  color: #71717a;
   cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
 }
 
 .download-result-section p {
