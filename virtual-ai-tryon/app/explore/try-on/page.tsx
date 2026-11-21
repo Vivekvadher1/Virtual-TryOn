@@ -2,9 +2,8 @@
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 
-import { exploreProducts } from "@/data/explore/explore-products";
-
-import { useState, Suspense } from "react";
+import { useState, Suspense, useEffect } from "react";
+import type { Product } from "@/types/product";
 
 import Link from "next/link";
 
@@ -18,17 +17,75 @@ function TryOnContent() {
   // Store the generation result message.
   const [generationMessage, setGenerationMessage] = useState("");
 
+  // Stores the selected product fetched from MongoDB.
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
+  // Tracks whether the selected product is loading.
+  const [productLoading, setProductLoading] = useState(true);
+
+  // Stores product fetching errors.
+  const [productError, setProductError] = useState("");
+
   // Read selected product options from the URL.
   const searchParams = useSearchParams();
 
-  const productId = Number(searchParams.get("productId"));
+  // MongoDB product IDs are strings, not numbers.
+  const productId = searchParams.get("productId");
   const selectedSize = searchParams.get("size");
   const selectedColor = searchParams.get("color");
 
-  // Find the selected product from our product data.
-  const selectedProduct = exploreProducts.find(
-    (product) => product.id === productId,
-  );
+  // Fetch the selected product from the backend using its MongoDB ID.
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const fetchSelectedProduct = async () => {
+      if (!productId) {
+        setSelectedProduct(null);
+        setProductError(
+          "No product was selected. Please choose a product first.",
+        );
+        setProductLoading(false);
+        return;
+      }
+
+      try {
+        setProductLoading(true);
+        setProductError("");
+        setSelectedProduct(null);
+
+        const response = await fetch(
+          `http://localhost:5000/api/products/${productId}`,
+          { signal: controller.signal },
+        );
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success || !result.data) {
+          throw new Error(result.message || "Unable to find this product.");
+        }
+
+        setSelectedProduct(result.data as Product);
+      } catch (error) {
+        // Ignore errors caused by this request being cancelled.
+        if (error instanceof Error && error.name === "AbortError") return;
+
+        setProductError(
+          error instanceof Error
+            ? error.message
+            : "Something went wrong while loading the product.",
+        );
+      } finally {
+        if (!controller.signal.aborted) {
+          setProductLoading(false);
+        }
+      }
+    };
+
+    fetchSelectedProduct();
+
+    // Cancel the request if the selected product changes or the page unmounts.
+    return () => controller.abort();
+  }, [productId]);
 
   // Check whether the selected product has size options.
   const requiresSize = Boolean(selectedProduct?.sizes?.length);
@@ -215,7 +272,16 @@ function TryOnContent() {
         <div className="try-on-product">
           <h2>Selected Product</h2>
 
-          {selectedProduct ? (
+          {productLoading ? (
+            <div className="selected-product-placeholder">
+              <p>Loading selected product...</p>
+            </div>
+          ) : productError ? (
+            <div className="selected-product-placeholder">
+              <p>{productError}</p>
+              <Link href="/explore">Browse Products</Link>
+            </div>
+          ) : selectedProduct ? (
             <div className="selected-product-card">
               {/* Product image */}
               <Image
@@ -316,9 +382,9 @@ function TryOnContent() {
           </p>
         )}
 
-        {!selectedProduct && (
+        {!productLoading && !selectedProduct && (
           <p className="try-on-validation-message">
-            Please select a product first.
+            Please select a valid product first.
           </p>
         )}
 

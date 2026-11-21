@@ -240,22 +240,24 @@ function ProductDetails({ params }: ProductDetailsPageProps) {
           )}
 
           {/* Add or remove the product from the wishlist */}
-          <button
-            type="button"
-            className={`product-wishlist-btn ${isWishlisted ? "active" : ""}`}
-            onClick={toggleWishlist}
-            aria-pressed={isWishlisted}
-          >
-            {isWishlisted ? "♥ Added to Wishlist" : "♡ Add to Wishlist"}
-          </button>
+          <div className="product-details-actions">
+            <button
+              type="button"
+              className={`product-wishlist-btn ${isWishlisted ? "active" : ""}`}
+              onClick={toggleWishlist}
+              aria-pressed={isWishlisted}
+            >
+              {isWishlisted ? "♥ Added to Wishlist" : "♡ Add to Wishlist"}
+            </button>
 
-          {/* Navigate to Try-On with the selected product options */}
-          <Link
-            href={`/explore/try-on?productId=${product._id}&size=${encodeURIComponent(selectedSize ?? "")}&color=${encodeURIComponent(selectedColor ?? "")}`}
-            className="product-try-on-btn"
-          >
-            Try On
-          </Link>
+            {/* Navigate to Try-On with the selected product options */}
+            <Link
+              href={`/explore/try-on?productId=${product._id}&size=${encodeURIComponent(selectedSize ?? "")}&color=${encodeURIComponent(selectedColor ?? "")}`}
+              className="product-try-on-btn"
+            >
+              Try On
+            </Link>
+          </div>
         </div>
       </section>
     </main>

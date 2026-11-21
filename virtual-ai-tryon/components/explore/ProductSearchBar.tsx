@@ -1,3 +1,6 @@
+"use client";
+
+import { Search, X } from "lucide-react";
 
 interface ProductSearchBarProps {
   searchTerm: string;
@@ -10,10 +13,12 @@ export default function ProductSearchBar({
 }: ProductSearchBarProps) {
   return (
     <div className="product-search">
-      <span className="search-icon">⌕</span>
+      <span className="search-icon" aria-hidden="true">
+        <Search size={18} strokeWidth={2} />
+      </span>
 
       <input
-        type="search"
+        type="text"
         placeholder="Search products..."
         value={searchTerm}
         onChange={(event) => onSearchChange(event.target.value)}
@@ -28,10 +33,9 @@ export default function ProductSearchBar({
           onClick={() => onSearchChange("")}
           aria-label="Clear search"
         >
-          ×
+          <X size={16} strokeWidth={2.2} aria-hidden="true" />
         </button>
       )}
     </div>
   );
 }
-    

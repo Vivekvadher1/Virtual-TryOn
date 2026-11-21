@@ -5,9 +5,9 @@ import { useEffect, useState } from "react";
 import ProductCard from "@/components/explore/ProductCard";
 import ProductCategoryFilter from "@/components/explore/ProductCategoryFilter";
 
-import type { Product, ProductsApiResponse } from "@/types/product";
 import ProductSortDropdown from "@/components/explore/ProductSortDropdown";
-import ProductSearchBar from "@/components/explore/ProductSearchBar";
+ import ProductSearchBar from "@/components/explore/ProductSearchBar";
+import type { Product, ProductsApiResponse } from "@/types/product";
 
 export default function ExplorePage() {
   // Stores the currently selected product category.
@@ -124,23 +124,25 @@ export default function ExplorePage() {
       />
 
       <div className="product-controls">
+        <div className="sort-reset-group">
+          <ProductSortDropdown
+            sortOption={sortOption}
+            onSortChange={setSortOption}
+          />
+
+          <button
+            type="button"
+            className="reset-filters-button"
+            onClick={handleResetFilters}
+          >
+            Clear Filters
+          </button>
+        </div>
+
         <ProductSearchBar
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
         />
-
-        <ProductSortDropdown
-          sortOption={sortOption}
-          onSortChange={setSortOption}
-        />
-
-        <button
-          type="button"
-          className="reset-filters-button"
-          onClick={handleResetFilters}
-        >
-          Reset Filters
-        </button>
 
         <p className="product-count">
           Showing {sortedProducts.length} products
