@@ -7,6 +7,7 @@ const cors = require("cors");
 const connectDB = require("./config/db");
 const productRoutes = require("./routes/productRoutes");
 const uploadRoutes = require("./routes/uploadRoutes");
+const tryonRoutes = require("./routes/tryonRoutes");
 const cloudinary = require("./config/cloudinary");
 
 const app = express();
@@ -16,6 +17,7 @@ app.use(express.json());
 
 app.use("/api/products", productRoutes);
 app.use("/api/upload", uploadRoutes);
+app.use("/api/tryon", tryonRoutes);
 
 app.get("/", (req, res) => {
   res.send("Virtual AI Try-On Studio Backend is Running!");

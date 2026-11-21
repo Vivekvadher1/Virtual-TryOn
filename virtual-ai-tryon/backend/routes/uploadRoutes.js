@@ -46,6 +46,23 @@ const upload = multer({
   },
 });
 
+// Separate upload configuration for user Try-On photos.
+const userPhotoUpload = multer({
+  storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024, // Maximum 5 MB
+  },
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+
+    if (allowedTypes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only JPG, PNG, and WEBP images are allowed!"), false);
+    }
+  },
+});
+
 async function removeTempFile(filePath) {
   if (!filePath) return;
   try {
@@ -101,5 +118,55 @@ router.post("/image", upload.single("image"), async (req, res) => {
     });
   }
 });
+
+// ==========================================
+// USER TRY-ON PHOTO UPLOAD
+// ==========================================
+
+router.post(
+  "/user-photo",
+  userPhotoUpload.single("photo"),
+  async (req, res) => {
+    const tempFilePath = req.file?.path;
+
+    try {
+      // Check whether the user selected a photo.
+      if (!req.file) {
+        return res.status(400).json({
+          success: false,
+          message: "Please select a user photo.",
+        });
+      }
+
+      // Upload the user's photo to a separate Cloudinary folder.
+      const result = await cloudinary.uploader.upload(tempFilePath, {
+        folder: "virtual-ai-tryon/user-photos",
+      });
+
+      // Remove the temporary local file.
+      await removeTempFile(tempFilePath);
+
+      return res.status(200).json({
+        success: true,
+        message: "User photo uploaded successfully!",
+        image: {
+          url: result.secure_url,
+          public_id: result.public_id,
+        },
+      });
+    } catch (error) {
+      console.error("User photo upload error:", error);
+
+      // Clean up the temporary file if uploading fails.
+      await removeTempFile(tempFilePath);
+
+      return res.status(500).json({
+        success: false,
+        message: "User photo upload failed.",
+        error: error.message,
+      });
+    }
+  },
+);
 
 module.exports = router;

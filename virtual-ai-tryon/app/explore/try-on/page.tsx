@@ -11,6 +11,20 @@ function TryOnContent() {
   // Store the uploaded photo preview URL.
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
 
+  // Store the permanent Cloudinary image URL.
+  const [uploadedPhotoUrl, setUploadedPhotoUrl] = useState<string | null>(null);
+
+  // Store the Cloudinary public ID for future image management.
+  const [uploadedPhotoPublicId, setUploadedPhotoPublicId] = useState<
+    string | null
+  >(null);
+
+  // Track whether the photo is uploading to Cloudinary.
+  const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
+
+  // Store photo upload errors.
+  const [photoUploadError, setPhotoUploadError] = useState("");
+
   // Track the Try-On generation status.
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -104,7 +118,12 @@ function TryOnContent() {
 
   // Check whether all required information is available.
   const isReadyToGenerate = Boolean(
-    uploadedImage && selectedProduct && isSizeValid && isColorValid,
+    uploadedImage &&
+    uploadedPhotoUrl &&
+    selectedProduct &&
+    isSizeValid &&
+    isColorValid &&
+    !isUploadingPhoto,
   );
 
   // Determine the current Try-On status.
@@ -125,26 +144,83 @@ function TryOnContent() {
         ? "ready"
         : "waiting";
 
-  // Handle the selected image file.
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  // Handle user photo selection and Cloudinary upload.
+  const handleImageUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = event.target.files?.[0];
 
     if (!file) return;
 
-    // Allow only image files.
-    if (!file.type.startsWith("image/")) {
-      alert("Please select a valid image.");
+    // Allow only JPG, PNG and WEBP images.
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+
+    if (!allowedTypes.includes(file.type)) {
+      setPhotoUploadError("Only JPG, PNG and WEBP images are allowed!");
       return;
     }
 
-    // Create a temporary URL for the image preview.
-    const imageUrl = URL.createObjectURL(file);
+    // Check the maximum file size (5 MB).
+    if (file.size > 5 * 1024 * 1024) {
+      setPhotoUploadError("Image size must not exceed 5 MB.");
+      return;
+    }
 
-    // Update the uploaded photo.
+    // Release the previous browser preview if one exists.
+    if (uploadedImage) {
+      URL.revokeObjectURL(uploadedImage);
+    }
+
+    // Create an instant browser preview.
+    const imageUrl = URL.createObjectURL(file);
     setUploadedImage(imageUrl);
 
-    // Clear the previous generation message.
+    // Clear previous upload information.
+    setUploadedPhotoUrl(null);
+    setUploadedPhotoPublicId(null);
+    setPhotoUploadError("");
     setGenerationMessage("");
+
+    // Prepare the image for the backend.
+    const formData = new FormData();
+    formData.append("photo", file);
+
+    try {
+      setIsUploadingPhoto(true);
+
+      // Send the image to the Express backend.
+      const response = await fetch(
+        "http://localhost:5000/api/upload/user-photo",
+        {
+          method: "POST",
+          body: formData,
+        },
+      );
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "Photo upload failed.");
+      }
+
+      // Save the Cloudinary image URL and public ID.
+      setUploadedPhotoUrl(result.image.url);
+      setUploadedPhotoPublicId(result.image.public_id);
+
+      console.log("User photo uploaded successfully!");
+      console.log("Cloudinary URL:", result.image.url);
+      console.log("Cloudinary Public ID:", result.image.public_id);
+    } catch (error) {
+      console.error("User photo upload error:", error);
+
+      setPhotoUploadError(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong while uploading your photo.",
+      );
+    } finally {
+      setIsUploadingPhoto(false);
+    }
   };
 
   // Simulate the Try-On generation process.
@@ -175,7 +251,11 @@ function TryOnContent() {
     // Remove the uploaded photo.
     setUploadedImage(null);
 
-    // Clear the previous generation message.
+    setUploadedPhotoUrl(null);
+    setUploadedPhotoPublicId(null);
+
+    // Clear messages.
+    setPhotoUploadError("");
     setGenerationMessage("");
   };
 
@@ -205,7 +285,7 @@ function TryOnContent() {
             <input
               type="file"
               id="photo-upload"
-              accept="image/png, image/jpeg"
+              accept="image/png, image/jpeg, image/webp"
               onChange={handleImageUpload}
               onClick={(event) => {
                 // Allow selecting the same image again.
@@ -223,7 +303,19 @@ function TryOnContent() {
                   className="uploaded-photo-preview"
                 />
 
-                <p>Photo uploaded successfully!</p>
+                {isUploadingPhoto ? (
+                  <p>Uploading your photo to Cloudinary...</p>
+                ) : uploadedPhotoUrl ? (
+                  <p>Photo uploaded successfully!</p>
+                ) : (
+                  <p>Photo preview ready. Upload failed or incomplete.</p>
+                )}
+
+                {photoUploadError && (
+                  <p className="try-on-validation-message">
+                    {photoUploadError}
+                  </p>
+                )}
 
                 <div className="photo-action-buttons">
                   {/* Allow users to upload a different photo */}
@@ -236,7 +328,14 @@ function TryOnContent() {
                     type="button"
                     className="remove-photo-btn"
                     onClick={() => {
+                      if (uploadedImage) {
+                        URL.revokeObjectURL(uploadedImage);
+                      }
+
                       setUploadedImage(null);
+                      setUploadedPhotoUrl(null);
+                      setUploadedPhotoPublicId(null);
+                      setPhotoUploadError("");
                       setGenerationMessage("");
                     }}
                   >
