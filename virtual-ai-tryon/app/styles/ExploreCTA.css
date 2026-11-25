@@ -1,0 +1,201 @@
+/* =========================
+   EXPLORE CTA SECTION
+========================= */
+
+.explore-cta-section {
+    position: relative;
+    padding: 40px 7% 65px;
+    background: transparent;
+}
+
+.explore-cta-content {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 78px 7%;
+    border-radius: 32px;
+    text-align: center;
+
+    /* Rich contrasting dark plum-obsidian backdrop */
+    background:
+        radial-gradient(circle at 15% 20%, rgba(168, 85, 247, 0.34), transparent 45%),
+        radial-gradient(circle at 85% 80%, rgba(236, 72, 153, 0.26), transparent 48%),
+        linear-gradient(135deg, #16092b 0%, #241042 52%, #190b30 100%);
+
+    border: 1px solid rgba(196, 181, 253, 0.22);
+    box-shadow:
+        0 24px 60px rgba(22, 9, 43, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.14);
+
+    animation: uiFadeUp 0.7s ease both;
+}
+
+/* Subtle decorative glow rings inside the card */
+.explore-cta-content::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: -120px;
+    right: -80px;
+    width: 340px;
+    height: 340px;
+    border-radius: 50%;
+    border: 1px solid rgba(196, 181, 253, 0.14);
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.18), transparent 70%);
+    pointer-events: none;
+}
+
+.explore-cta-content::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    bottom: -140px;
+    left: -90px;
+    width: 360px;
+    height: 360px;
+    border-radius: 50%;
+    border: 1px solid rgba(236, 72, 153, 0.12);
+    background: radial-gradient(circle, rgba(236, 72, 153, 0.15), transparent 70%);
+    pointer-events: none;
+}
+
+/* GLASS EYEBROW PILL */
+
+.explore-cta-label {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 7px 16px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(216, 180, 254, 0.28);
+    color: #e9d5ff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    backdrop-filter: blur(8px);
+}
+
+/* HEADING */
+
+.explore-cta-content h2 {
+    max-width: 720px;
+    margin: 0 auto 18px;
+    color: #ffffff;
+    font-size: clamp(32px, 4.2vw, 48px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.16;
+    text-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+}
+
+/* SUBTITLE */
+
+.explore-cta-content p {
+    max-width: 560px;
+    margin: 0 auto 34px;
+    color: #d8cef0;
+    font-size: 16px;
+    line-height: 1.75;
+}
+
+/* HIGH-CONTRAST LUMINOUS BUTTON */
+
+.explore-cta-button {
+    position: relative;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px 32px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #ffffff 0%, #f3e8ff 100%);
+    color: #1e0b3b;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+    text-decoration: none;
+    box-shadow:
+        0 10px 28px rgba(168, 85, 247, 0.38),
+        0 0 0 1px rgba(255, 255, 255, 0.6);
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+}
+
+/* Subtle shimmer sweep on hover using your globals.css keyframes */
+.explore-cta-button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(168, 85, 247, 0.28),
+            transparent);
+    transform: skewX(-20deg);
+    pointer-events: none;
+}
+
+.explore-cta-button:hover::before {
+    animation: uiShimmerSweep 0.75s ease forwards;
+}
+
+.explore-cta-button:hover {
+    transform: translateY(-4px);
+    box-shadow:
+        0 16px 36px rgba(192, 132, 252, 0.5),
+        0 0 0 1px #ffffff;
+}
+
+.explore-cta-button span {
+    display: inline-flex;
+    align-items: center;
+    font-size: 18px;
+    color: var(--brand-violet);
+    transition: transform 0.3s ease;
+}
+
+.explore-cta-button:hover span {
+    transform: translateX(5px);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+    .explore-cta-section {
+        padding: 30px 6% 50px;
+    }
+
+    .explore-cta-content {
+        padding: 60px 6%;
+        border-radius: 26px;
+    }
+
+    .explore-cta-content p {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .explore-cta-section {
+        padding: 24px 5% 45px;
+    }
+
+    .explore-cta-content {
+        padding: 48px 20px;
+        border-radius: 22px;
+    }
+
+    .explore-cta-content h2 {
+        font-size: 29px;
+    }
+
+    .explore-cta-button {
+        padding: 13px 26px;
+    }
+}

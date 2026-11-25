@@ -16,6 +16,10 @@
 @import "./styles/ProductSearch.css";
 @import "./styles/HomeProducts.css";
 @import "./styles/NewArrival.css";
+@import "./styles/WhyChooseUs.css";
+@import "./styles/AboutPage.css";
+@import "./styles/ExploreCTA.css";
+@import "./styles/Footer.css";
 
 :root {
     --brand-violet: #8b5cf6;

@@ -90,6 +90,29 @@
     color: #77718a;
 }
 
+
+/* =========================
+   VIEW ALL LINK
+========================= */
+
+.new-arrivals-view-all {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    color: var(--brand-violet);
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.new-arrivals-view-all:hover {
+    color: var(--brand-purple);
+    transform: translateX(5px);
+}
+
+
 /* =========================
    RESPONSIVE DESIGN
 ========================= */

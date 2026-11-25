@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import ProductCard from "@/components/explore/ProductCard";
 import type { Product, ProductsApiResponse } from "@/types/product";
+import Link from "next/link";
 
 export default function NewArrivals() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -51,6 +52,10 @@ export default function NewArrivals() {
         <span className="new-arrivals-label">JUST DROPPED</span>
         <h2>New Arrivals</h2>
         <p>Discover the latest additions to your wardrobe.</p>
+
+        <Link href="/explore" className="new-arrivals-view-all">
+          View All →
+        </Link>
       </div>
 
       {loading ? (
