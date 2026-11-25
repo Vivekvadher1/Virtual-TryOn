@@ -14,6 +14,8 @@
 @import "./styles/ProductDetails.css";
 @import "./styles/TryOn.css";
 @import "./styles/ProductSearch.css";
+@import "./styles/HomeProducts.css";
+@import "./styles/NewArrival.css";
 
 :root {
     --brand-violet: #8b5cf6;

@@ -4,38 +4,36 @@
 
 .categories-section {
   padding: 90px 7%;
-  background: var(--gradient-soft-bg);
+  background: #ffffff;
 }
 
 .categories-header {
   text-align: center;
   max-width: 650px;
   margin: 0 auto 50px;
-  animation: uiFadeUp 0.6s ease forwards;
 }
 
 .categories-label {
   display: inline-block;
-  color: #7c3aed;
-  font-size: 12px;
+  color: #a855f7;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-bottom: 14px;
+  margin-bottom: 15px;
 }
 
 .categories-header h2 {
   font-size: 42px;
+  line-height: 1.3;
   font-weight: 800;
   color: #171717;
-  margin-bottom: 15px;
+  margin: 0 0 15px;
+  text-align: center;
 }
 
 .categories-header h2 span {
-  background: var(--gradient-accent-text);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  color: #a855f7;
 }
 
 .categories-description {
@@ -44,31 +42,76 @@
   line-height: 1.7;
 }
 
+/* =========================
+   HORIZONTAL CATEGORY ROLLER
+========================= */
+
 .categories-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
   gap: 25px;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 8px 4px 22px;
+
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+
+  scrollbar-width: thin;
+  scrollbar-color: #a78bfa #eee9f5;
 }
+
+/* Custom Scrollbar */
+
+.categories-grid::-webkit-scrollbar {
+  height: 7px;
+}
+
+.categories-grid::-webkit-scrollbar-track {
+  background: #eee9f5;
+  border-radius: 20px;
+}
+
+.categories-grid::-webkit-scrollbar-thumb {
+  background: #a78bfa;
+  border-radius: 20px;
+}
+
+.categories-grid::-webkit-scrollbar-thumb:hover {
+  background: #7c3aed;
+}
+
+/* =========================
+   CATEGORY CARDS
+========================= */
 
 .category-card {
   position: relative;
   overflow: hidden;
-  min-height: 320px;
+
+  flex: 0 0 300px;
+  min-height: 360px;
   padding: 25px;
+
   display: flex;
   align-items: flex-end;
-  border-radius: 18px;
+
+  border-radius: 22px;
   background: #f5f2ef;
   border: 1px solid rgba(139, 92, 246, 0.14);
+
   box-shadow: 0 10px 25px rgba(15, 23, 42, 0.05);
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+
+  scroll-snap-align: start;
+
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
   text-decoration: none;
   cursor: pointer;
 }
 
 .category-card:hover {
   transform: translateY(-6px);
-  border-color: rgba(139, 92, 246, 0.45);
   box-shadow: 0 20px 38px rgba(109, 40, 217, 0.16);
 }
 
@@ -79,20 +122,17 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.5s ease;
 }
 
 .category-card::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(15, 23, 42, 0.04) 35%,
-    rgba(24, 14, 46, 0.45) 75%,
-    rgba(15, 10, 30, 0.82) 100%
-  );
-  transition: opacity 0.35s ease;
+  background: linear-gradient(180deg,
+      rgba(15, 23, 42, 0.04) 35%,
+      rgba(24, 14, 46, 0.45) 75%,
+      rgba(15, 10, 30, 0.82) 100%);
 }
 
 .category-card h3 {
@@ -102,30 +142,38 @@
   color: #ffffff;
   font-weight: 700;
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
-  transition: transform 0.3s ease;
 }
 
 .category-card:hover img {
   transform: scale(1.08);
 }
 
-.category-card:hover h3 {
-  transform: translateX(4px);
-}
+/* =========================
+   TABLET
+========================= */
 
 @media (max-width: 1024px) {
-  .categories-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
   .categories-section {
     padding: 70px 5%;
   }
+
+  .category-card {
+    flex-basis: 270px;
+    min-height: 330px;
+  }
 }
+
+/* =========================
+   MOBILE
+========================= */
 
 @media (max-width: 600px) {
   .categories-section {
     padding: 55px 5%;
+  }
+
+  .categories-header {
+    margin-bottom: 35px;
   }
 
   .categories-header h2 {
@@ -137,11 +185,17 @@
   }
 
   .categories-grid {
-    grid-template-columns: 1fr;
-    gap: 18px;
+    gap: 16px;
+    padding-bottom: 18px;
   }
 
   .category-card {
-    min-height: 280px;
+    flex: 0 0 min(82vw, 320px);
+    min-height: 300px;
+    border-radius: 18px;
+  }
+
+  .category-card h3 {
+    font-size: 21px;
   }
 }

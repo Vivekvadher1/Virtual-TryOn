@@ -1,17 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
+import { useEffect, useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import ProductCard from "@/components/explore/ProductCard";
 import ProductCategoryFilter from "@/components/explore/ProductCategoryFilter";
 
 import ProductSortDropdown from "@/components/explore/ProductSortDropdown";
- import ProductSearchBar from "@/components/explore/ProductSearchBar";
+import ProductSearchBar from "@/components/explore/ProductSearchBar";
 import type { Product, ProductsApiResponse } from "@/types/product";
 
-export default function ExplorePage() {
+function ExplorePageContent() {
+  const searchParams = useSearchParams();
+  const categoryFromUrl = searchParams.get("category");
+
   // Stores the currently selected product category.
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState(
+    categoryFromUrl || "All",
+  );
   // Stores the selected product sorting option.
   const [sortOption, setSortOption] = useState("default");
   // Stores the user's product search query.
@@ -25,6 +30,11 @@ export default function ExplorePage() {
 
   // Stores any error that occurs during API fetching.
   const [error, setError] = useState("");
+
+  // Updates the selected category when the URL category changes.
+  useEffect(() => {
+    setSelectedCategory(categoryFromUrl || "All");
+  }, [categoryFromUrl]);
 
   // Fetches products from the Express backend when the page loads.
   useEffect(() => {
@@ -177,5 +187,13 @@ export default function ExplorePage() {
         )}
       </section>
     </main>
+  );
+}
+
+export default function ExplorePage() {
+  return (
+    <Suspense fallback={<p>Loading products...</p>}>
+      <ExplorePageContent />
+    </Suspense>
   );
 }

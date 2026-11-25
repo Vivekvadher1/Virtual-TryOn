@@ -1,0 +1,139 @@
+/* =========================
+   NEW ARRIVALS SECTION
+========================= */
+
+.new-arrivals-section {
+    padding: 90px 7%;
+    background: var(--gradient-soft-bg);
+    overflow: hidden;
+}
+
+/* =========================
+   SECTION HEADER
+========================= */
+
+.new-arrivals-header {
+    text-align: center;
+    max-width: 650px;
+    margin: 0 auto 50px;
+    animation: uiFadeUp 0.6s ease forwards;
+}
+
+.new-arrivals-label {
+    display: inline-block;
+    color: var(--brand-violet);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+}
+
+.new-arrivals-header h2 {
+    font-size: clamp(30px, 4vw, 44px);
+    font-weight: 800;
+    color: #1f1635;
+    margin-bottom: 14px;
+    line-height: 1.2;
+}
+
+.new-arrivals-header p {
+    font-size: 15px;
+    color: #77718a;
+    line-height: 1.7;
+}
+
+/* =========================
+   PRODUCT GRID
+========================= */
+
+.new-arrivals-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 26px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* =========================
+   PRODUCT CARD ANIMATION
+========================= */
+
+.new-arrivals-grid .product-card {
+    animation: uiFadeUp 0.6s ease both;
+}
+
+.new-arrivals-grid .product-card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.new-arrivals-grid .product-card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.new-arrivals-grid .product-card:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.new-arrivals-grid .product-card:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+/* =========================
+   LOADING / EMPTY / ERROR
+========================= */
+
+.new-arrivals-section>p {
+    text-align: center;
+    padding: 35px 15px;
+    font-size: 15px;
+    color: #77718a;
+}
+
+/* =========================
+   RESPONSIVE DESIGN
+========================= */
+
+@media (max-width: 1024px) {
+    .new-arrivals-section {
+        padding: 75px 5%;
+    }
+
+    .new-arrivals-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 22px;
+    }
+}
+
+@media (max-width: 768px) {
+    .new-arrivals-section {
+        padding: 65px 5%;
+    }
+
+    .new-arrivals-header {
+        margin-bottom: 35px;
+    }
+
+    .new-arrivals-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .new-arrivals-section {
+        padding: 50px 4%;
+    }
+
+    .new-arrivals-header h2 {
+        font-size: 30px;
+    }
+
+    .new-arrivals-header p {
+        font-size: 13px;
+    }
+
+    .new-arrivals-grid {
+        gap: 12px;
+    }
+}

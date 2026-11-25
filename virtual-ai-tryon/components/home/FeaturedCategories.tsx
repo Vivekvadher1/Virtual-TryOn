@@ -1,6 +1,34 @@
 import Image from "next/image";
 import Link from "next/link";
 
+const categories = [
+  {
+    name: "Top",
+    image: "/images/Clothing/white-shirt.jpg",
+    value: "Tops",
+  },
+  {
+    name: "Bottom",
+    image: "/images/Clothing/black-tshirt.jpg",
+    value: "Bottoms",
+  },
+  {
+    name: "Dress",
+    image: "/images/Clothing/white-shirt.jpg",
+    value: "Dresses",
+  },
+  {
+    name: "Outerwear",
+    image: "/images/Clothing/denim-jacket.jpg",
+    value: "Outerwear",
+  },
+  {
+    name: "Ethnic Wear",
+    image: "/images/Clothing/hoddie.jpg",
+    value: "Ethnic Wear",
+  },
+];
+
 export default function FeaturedCategories() {
   return (
     <section className="categories-section">
@@ -12,55 +40,28 @@ export default function FeaturedCategories() {
         </h2>
 
         <p className="categories-description">
-          Explore different fashion categories and discover your next favorite
+          Explore different clothing categories and discover your next favorite
           look.
         </p>
       </div>
 
       <div className="categories-grid">
-        <Link href="/explore?category=clothing" className="category-card">
-          <Image
-            src="/images/Clothing/clothing.png"
-            alt="Fashion clothing collection"
-            fill
-            sizes="(max-width: 600px) 90vw, (max-width: 1024px) 45vw, 22vw"
-            loading="eager"
-          />
-          <h3>Clothing</h3>
-        </Link>
+        {categories.map((category) => (
+          <Link
+            key={category.value}
+            href={`/explore?category=${encodeURIComponent(category.value)}`}
+            className="category-card"
+          >
+            <Image
+              src={category.image}
+              alt={`${category.name} collection`}
+              fill
+              sizes="(max-width: 600px) 90vw, (max-width: 1024px) 45vw, 22vw"
+            />
 
-        <Link href="/explore?category=shoes" className="category-card">
-          <Image
-            src="/images/Shoes/shoes.png"
-            alt="Fashion shoes collection"
-            fill
-            sizes="(max-width: 600px) 90vw, (max-width: 1024px) 45vw, 22vw"
-            loading="eager"
-          />
-          <h3>Shoes</h3>
-        </Link>
-
-        <Link href="/explore?category=bags" className="category-card">
-          <Image
-            src="/images/Bags/bags.png"
-            alt="Fashion bags collection"
-            fill
-            sizes="(max-width: 600px) 90vw, (max-width: 1024px) 45vw, 22vw"
-            loading="eager"
-          />
-          <h3>Bags</h3>
-        </Link>
-
-        <Link href="/explore?category=accessories" className="category-card">
-          <Image
-            src="/images/Accessories/accessories.png"
-            alt="Fashion accessories collection"
-            fill
-            sizes="(max-width: 600px) 90vw, (max-width: 1024px) 45vw, 22vw"
-            loading="eager"
-          />
-          <h3>Accessories</h3>
-        </Link>
+            <h3>{category.name}</h3>
+          </Link>
+        ))}
       </div>
     </section>
   );

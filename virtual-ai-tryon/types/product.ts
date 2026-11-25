@@ -16,6 +16,7 @@ export interface Product {
     description: string;
     sizes?: string[];
     colors?: string[];
+    createdAt?: string;
 }
 
 // Structure of the response returned by GET /api/products.

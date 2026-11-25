@@ -6,7 +6,14 @@ interface ProductCategoryFilterProps {
 }
 
 // Available categories for filtering the product collection.
-const productCategories = ["All", "Clothing", "Shoes", "Bags", "Accessories"];
+const productCategories = [
+  "All",
+  "Tops",
+  "Bottoms",
+  "Dresses",
+  "Outerwear",
+  "Ethnic Wear",
+];
 
 export default function ProductCategoryFilter({
   selectedCategory,

@@ -25,7 +25,7 @@ const productSchema = new mongoose.Schema(
     category: {
       type: String,
       required: true,
-      enum: ["Clothing", "Shoes", "Bags", "Accessories"],
+      enum: ["Tops", "Bottoms", "Dresses", "Outerwear", "Ethnic Wear"],
     },
 
     // Product price in INR
