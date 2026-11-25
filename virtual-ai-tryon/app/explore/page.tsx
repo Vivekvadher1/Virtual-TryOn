@@ -160,7 +160,7 @@ function ExplorePageContent() {
       </div>
 
       {/* Dynamically filtered product collection */}
-      <section className="product-listing-section">
+      {/* <section className="product-listing-section">
         {loading ? (
           <p className="loading-products-message">Loading products...</p>
         ) : error ? (
@@ -183,6 +183,59 @@ function ExplorePageContent() {
                 No products found. Try a different search or category.
               </p>
             )}
+          </div>
+        )}
+      </section> */}
+
+      {/* Dynamically filtered product collection */}
+      <section className="product-listing-section">
+        {loading ? (
+          <p className="loading-products-message">Loading products...</p>
+        ) : error ? (
+          <div className="empty-state-card">
+            <span className="empty-state-badge">CONNECTION ISSUE</span>
+            <h3>
+              Unable to Load <span>Products</span>
+            </h3>
+            <p>{error}</p>
+            <button
+              type="button"
+              className="empty-state-btn"
+              onClick={() => window.location.reload()}
+            >
+              Try Again
+            </button>
+          </div>
+        ) : sortedProducts.length > 0 ? (
+          <div className="product-listing-grid">
+            {sortedProducts.map((product) => (
+              <ProductCard
+                key={product._id}
+                id={product._id}
+                name={product.name}
+                category={product.category}
+                price={product.price}
+                image={product.image}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="empty-state-card">
+            <span className="empty-state-badge">NO MATCHES</span>
+            <h3>
+              No <span>Products</span> Found
+            </h3>
+            <p>
+              Nothing matched your current search or filter. Try another keyword,
+              category, or reset your filters.
+            </p>
+            <button
+              type="button"
+              className="empty-state-btn"
+              onClick={handleResetFilters}
+            >
+              Reset Filters
+            </button>
           </div>
         )}
       </section>

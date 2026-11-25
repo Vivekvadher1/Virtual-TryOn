@@ -20,6 +20,7 @@
 @import "./styles/AboutPage.css";
 @import "./styles/ExploreCTA.css";
 @import "./styles/Footer.css";
+@import "./styles/NotFound.css";
 
 :root {
     --brand-violet: #8b5cf6;

@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import type { Product } from "@/types/product";
+import ProductNotFound from "@/components/explore/NotFound";
 
 // Shared key used by the Product Details and Wishlist pages.
 const WISHLIST_KEY = "wishlist";
@@ -41,6 +42,9 @@ function ProductDetails({ params }: ProductDetailsPageProps) {
   // Stores any API fetching error.
   const [error, setError] = useState("");
 
+  // Tracks whether the requested product does not exist.
+  const [isNotFound, setIsNotFound] = useState(false);
+
   // Store the selected size
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
 
@@ -50,12 +54,26 @@ function ProductDetails({ params }: ProductDetailsPageProps) {
   // Track whether the current product is in the wishlist.
   const [isWishlisted, setIsWishlisted] = useState(false);
 
+  // Checks whether the provided ID is a valid MongoDB ObjectId.
+  const isValidProductId = /^[0-9a-fA-F]{24}$/.test(id);
+
   // Fetches the selected product from the backend.
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         setLoading(true);
         setError("");
+
+        // Reset previous product states.
+        setProduct(null);
+        setIsNotFound(false);
+
+        // Stop fetching if the product ID is invalid.
+        if (!isValidProductId) {
+          setIsNotFound(true);
+          setLoading(false);
+          return;
+        }
 
         // Request the selected product using its MongoDB ID.
         const response = await fetch(
@@ -65,7 +83,8 @@ function ProductDetails({ params }: ProductDetailsPageProps) {
         // Handle unsuccessful API responses.
         if (!response.ok) {
           if (response.status === 404) {
-            throw new Error("Product not found.");
+            setIsNotFound(true);
+            return;
           }
 
           throw new Error("Failed to fetch product details.");
@@ -139,6 +158,11 @@ function ProductDetails({ params }: ProductDetailsPageProps) {
         <p>Loading product details...</p>
       </main>
     );
+  }
+
+  // Display custom page when the product doesn't exist.
+  if (isNotFound) {
+    return <ProductNotFound />;
   }
 
   // Display error message if the API request fails.
