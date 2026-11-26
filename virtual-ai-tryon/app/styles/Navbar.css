@@ -12,11 +12,9 @@
   border-radius: 999px;
 
   background:
-    linear-gradient(
-      135deg,
+    linear-gradient(135deg,
       rgba(255, 255, 255, 0.94) 0%,
-      rgba(245, 243, 255, 0.9) 100%
-    );
+      rgba(245, 243, 255, 0.9) 100%);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid rgba(139, 92, 246, 0.18);
@@ -85,6 +83,23 @@
 
 .nav-links a:hover::after {
   width: 100%;
+}
+
+.nav-links a.wishlist-link {
+  display: inline-flex;
+  align-items: center;
+}
+
+.wishlist-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  line-height: 1;
+}
+
+.wishlist-icon {
+  flex-shrink: 0;
+  font-size: 14px;
 }
 
 .nav-actions {

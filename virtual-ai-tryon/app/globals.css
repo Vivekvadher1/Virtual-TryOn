@@ -21,6 +21,7 @@
 @import "./styles/ExploreCTA.css";
 @import "./styles/Footer.css";
 @import "./styles/NotFound.css";
+@import "./styles/Wishlist.css";
 
 :root {
     --brand-violet: #8b5cf6;

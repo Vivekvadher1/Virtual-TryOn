@@ -83,6 +83,7 @@ export default function WishlistPage() {
 
     // Update localStorage.
     localStorage.setItem(WISHLIST_KEY, JSON.stringify(updatedWishlist));
+    // window.dispatchEvent(new Event("wishlistUpdated"));
 
     // Update the displayed products.
     setWishlistProducts((previousProducts) =>
@@ -94,7 +95,10 @@ export default function WishlistPage() {
   if (loading) {
     return (
       <main className="wishlist-page">
-        <p>Loading your wishlist...</p>
+        <div className="wishlist-status-card">
+          <span className="wishlist-badge">SAVED PICKS</span>
+          <p className="wishlist-status-text">Loading your wishlist...</p>
+        </div>
       </main>
     );
   }
@@ -103,8 +107,11 @@ export default function WishlistPage() {
   if (error) {
     return (
       <main className="wishlist-page">
-        <h1>Unable to Load Wishlist</h1>
-        <p>{error}</p>
+        <div className="wishlist-status-card">
+          <span className="wishlist-badge">SOMETHING WENT WRONG</span>
+          <h1>Unable to Load Wishlist</h1>
+          <p className="wishlist-status-text">{error}</p>
+        </div>
       </main>
     );
   }
@@ -112,46 +119,68 @@ export default function WishlistPage() {
   return (
     <main className="wishlist-page">
       <section className="wishlist-container">
-        <h1>My Wishlist</h1>
-
-        <p>
-          {wishlistProducts.length} saved{" "}
-          {wishlistProducts.length === 1 ? "product" : "products"}
-        </p>
+        <div className="wishlist-header">
+          <span className="wishlist-badge">YOUR CURATED EDIT</span>
+          <h1>
+            My <span>Wishlist</span>
+          </h1>
+          <p className="wishlist-count">
+            {wishlistProducts.length} saved{" "}
+            {wishlistProducts.length === 1 ? "product" : "products"}
+          </p>
+        </div>
 
         {/* Empty wishlist state */}
         {wishlistProducts.length === 0 ? (
           <div className="wishlist-empty">
+            <span className="wishlist-empty-badge">EMPTY WISHLIST</span>
             <h2>Your wishlist is empty</h2>
             <p>Save your favourite products to find them here.</p>
 
-            <Link href="/explore">Explore Products</Link>
+            <Link href="/explore" className="wishlist-empty-btn">
+              Explore Products
+            </Link>
           </div>
         ) : (
           <div className="wishlist-grid">
             {wishlistProducts.map((product) => (
               <div key={product._id} className="wishlist-card">
-                <Link href={`/explore/${product._id}`}>
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    width={400}
-                    height={450}
-                  />
+                <Link
+                  href={`/explore/${product._id}`}
+                  className="wishlist-card-link"
+                >
+                  <div className="wishlist-image-wrap">
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      width={400}
+                      height={450}
+                    />
+                  </div>
 
-                  <h2>{product.name}</h2>
+                  <div className="wishlist-card-body">
+                    <h2>{product.name}</h2>
+                  </div>
                 </Link>
 
-                <p>{product.category}</p>
+                <div className="wishlist-card-footer">
+                  <div className="wishlist-card-meta">
+                    <span className="wishlist-category">
+                      {product.category}
+                    </span>
+                    <span className="wishlist-price">
+                      ₹{product.price.toLocaleString("en-IN")}
+                    </span>
+                  </div>
 
-                <p>₹{product.price.toLocaleString("en-IN")}</p>
-
-                <button
-                  type="button"
-                  onClick={() => removeFromWishlist(product._id)}
-                >
-                  ♥ Remove from Wishlist
-                </button>
+                  <button
+                    type="button"
+                    className="wishlist-remove-btn"
+                    onClick={() => removeFromWishlist(product._id)}
+                  >
+                    ♥ Remove from Wishlist
+                  </button>
+                </div>
               </div>
             ))}
           </div>
