@@ -1,116 +1,65 @@
 "use client";
+
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
-
+import Link from "next/link";
 import { useState, Suspense, useEffect } from "react";
 import type { Product } from "@/types/product";
+import {
+  ALL_VIRTUAL_MODELS,
+  ModelGender,
+  VIRTUAL_MODELS,
+  VirtualModel,
+} from "@/src/constant/VIrtualModels";
 
-import Link from "next/link";
+const API_BASE = "http://localhost:5000";
+const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
 function TryOnContent() {
-  // Store the uploaded photo preview URL.
-  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
-
-  // Track whether the user wants to use a personal photo or an AI model.
-  const [selectedMode, setSelectedMode] = useState<"personal" | "virtual">(
-    "personal",
-  );
-
-  // Store the selected virtual model.
-  const [selectedVirtualModel, setSelectedVirtualModel] = useState<
-    string | null
-  >(null);
-
-  // Track the selected virtual model category.
-  const [selectedModelGender, setSelectedModelGender] = useState<
-    "male" | "female"
-  >("male");
-
-  // Store the permanent Cloudinary image URL.
-  const [uploadedPhotoUrl, setUploadedPhotoUrl] = useState<string | null>(null);
-
-  // Store the Cloudinary public ID for future image management.
-  const [uploadedPhotoPublicId, setUploadedPhotoPublicId] = useState<
-    string | null
-  >(null);
-
-  // Track whether the photo is uploading to Cloudinary.
-  const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
-
-  // Store photo upload errors.
-  const [photoUploadError, setPhotoUploadError] = useState("");
-
-  // Track the Try-On generation status.
-  const [isGenerating, setIsGenerating] = useState(false);
-
-  // Store the generation result message.
-  const [generationMessage, setGenerationMessage] = useState("");
-
-  // Store the AI-generated try-on image URL.
-  const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(
-    null,
-  );
-
-  // Stores the selected product fetched from MongoDB.
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-
-  // Tracks whether the selected product is loading.
-  const [productLoading, setProductLoading] = useState(true);
-
-  // Stores product fetching errors.
-  const [productError, setProductError] = useState("");
-
-  // Read selected product options from the URL.
   const searchParams = useSearchParams();
-
-  // Available AI virtual models stored on Cloudinary.
-  const virtualModels = {
-    male: [
-      {
-        id: "Male-1",
-        image:
-          "https://res.cloudinary.com/dtgxlzlmw/image/upload/v1795285938/Male-1.png",
-      },
-      {
-        id: "Male-2",
-        image:
-          "https://res.cloudinary.com/dtgxlzlmw/image/upload/v1795285939/Male-2.png",
-      },
-      {
-        id: "Male-3",
-        image:
-          "https://res.cloudinary.com/dtgxlzlmw/image/upload/v1795285940/Male-3.png",
-      },
-    ],
-    female: [
-      {
-        id: "Female-1",
-        image:
-          "https://res.cloudinary.com/dtgxlzlmw/image/upload/v1795285856/Female-1.png",
-      },
-      {
-        id: "Female-2",
-        image:
-          "https://res.cloudinary.com/dtgxlzlmw/image/upload/v1795285856/Female-2.png",
-      },
-      {
-        id: "Female-3",
-        image:
-          "https://res.cloudinary.com/dtgxlzlmw/image/upload/v1795285857/Female-3.png",
-      },
-    ],
-  };
-
-  // MongoDB product IDs are strings, not numbers.
   const productId = searchParams.get("productId");
   const selectedSize = searchParams.get("size");
   const selectedColor = searchParams.get("color");
 
-  // Fetch the selected product from the backend using its MongoDB ID.
+  const [selectedMode, setSelectedMode] = useState<"personal" | "virtual">(
+    "personal",
+  );
+  const [selectedModelGender, setSelectedModelGender] =
+    useState<ModelGender>("male");
+  const [modelIndex, setModelIndex] = useState(0);
+  const [selectedVirtualModel, setSelectedVirtualModel] = useState<
+    string | null
+  >(null);
+
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  const [uploadedPhotoUrl, setUploadedPhotoUrl] = useState<string | null>(null);
+  const [uploadedPhotoPublicId, setUploadedPhotoPublicId] = useState<
+    string | null
+  >(null);
+  const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
+  const [photoUploadError, setPhotoUploadError] = useState("");
+
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generationMessage, setGenerationMessage] = useState("");
+  const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(
+    null,
+  );
+
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [productLoading, setProductLoading] = useState(true);
+  const [productError, setProductError] = useState("");
+
+  const currentModels = VIRTUAL_MODELS[selectedModelGender];
+  const activeModel = currentModels[modelIndex] ?? currentModels[0];
+  const selectedVirtualModelDetails = ALL_VIRTUAL_MODELS.find(
+    (m) => m.id === selectedVirtualModel,
+  );
+
   useEffect(() => {
     const controller = new AbortController();
 
-    const fetchSelectedProduct = async () => {
+    (async () => {
       if (!productId) {
         setSelectedProduct(null);
         setProductError(
@@ -125,218 +74,157 @@ function TryOnContent() {
         setProductError("");
         setSelectedProduct(null);
 
-        const response = await fetch(
-          `http://localhost:5000/api/products/${productId}`,
-          { signal: controller.signal },
-        );
+        const res = await fetch(`${API_BASE}/api/products/${productId}`, {
+          signal: controller.signal,
+        });
+        const data = await res.json();
 
-        const result = await response.json();
-
-        if (!response.ok || !result.success || !result.data) {
-          throw new Error(result.message || "Unable to find this product.");
+        if (!res.ok || !data.success || !data.data) {
+          throw new Error(data.message || "Unable to find this product.");
         }
-
-        setSelectedProduct(result.data as Product);
-      } catch (error) {
-        // Ignore errors caused by this request being cancelled.
-        if (error instanceof Error && error.name === "AbortError") return;
-
+        setSelectedProduct(data.data as Product);
+      } catch (err) {
+        if (err instanceof Error && err.name === "AbortError") return;
         setProductError(
-          error instanceof Error
-            ? error.message
-            : "Something went wrong while loading the product.",
+          err instanceof Error ? err.message : "Failed to load product.",
         );
       } finally {
-        if (!controller.signal.aborted) {
-          setProductLoading(false);
-        }
+        if (!controller.signal.aborted) setProductLoading(false);
       }
-    };
+    })();
 
-    fetchSelectedProduct();
-
-    // Cancel the request if the selected product changes or the page unmounts.
     return () => controller.abort();
   }, [productId]);
 
-  // Check whether the selected product has size options.
   const requiresSize = Boolean(selectedProduct?.sizes?.length);
-
-  // Get the details of the selected virtual model.
-  const selectedVirtualModelDetails = virtualModels[selectedModelGender].find(
-    (model) => model.id === selectedVirtualModel,
-  );
-
-  // Check whether the selected product has color options.
   const requiresColor = Boolean(selectedProduct?.colors?.length);
-
-  // Validate the selected size and color against available options.
   const isSizeValid =
     !requiresSize ||
     Boolean(selectedSize && selectedProduct?.sizes?.includes(selectedSize));
-
   const isColorValid =
     !requiresColor ||
     Boolean(selectedColor && selectedProduct?.colors?.includes(selectedColor));
 
-  // Check whether all required information is available.
+  const sourceReady =
+    selectedMode === "personal"
+      ? Boolean(uploadedImage && uploadedPhotoUrl && !isUploadingPhoto)
+      : Boolean(selectedVirtualModelDetails);
+
   const isReadyToGenerate = Boolean(
-    (selectedMode === "personal"
-      ? uploadedImage && uploadedPhotoUrl && !isUploadingPhoto
-      : selectedVirtualModelDetails) &&
-    selectedProduct &&
-    isSizeValid &&
-    isColorValid,
+    sourceReady && selectedProduct && isSizeValid && isColorValid,
   );
 
-  // Determine the current Try-On status.
-  const tryOnStatus = isGenerating
-    ? "Generating your Try-On..."
-    : generationMessage
-      ? "Request prepared — AI integration pending"
-      : isReadyToGenerate
-        ? "Ready to generate"
-        : "Waiting for required details";
+  const status = isGenerating
+    ? { label: "Generating your Try-On...", cls: "generating" }
+    : generatedImageUrl
+      ? { label: "Try-On ready", cls: "ready" }
+      : generationMessage
+        ? { label: "Notice", cls: "prepared" }
+        : isReadyToGenerate
+          ? { label: "Ready to generate", cls: "ready" }
+          : { label: "Waiting for required details", cls: "waiting" };
 
-  // Set a status class for styling.
-  const tryOnStatusClass = isGenerating
-    ? "generating"
-    : generationMessage
-      ? "prepared"
-      : isReadyToGenerate
-        ? "ready"
-        : "waiting";
+  const validationErrors = [
+    selectedMode === "personal" && !uploadedImage
+      ? "Please upload your photo to continue."
+      : "",
+    !productLoading && !selectedProduct
+      ? "Please select a valid product first."
+      : "",
+    selectedProduct && requiresSize && !isSizeValid
+      ? "Please select a valid product size."
+      : "",
+    selectedProduct && requiresColor && !isColorValid
+      ? "Please select a valid product color."
+      : "",
+  ].filter(Boolean);
 
-  // Handle user photo selection and Cloudinary upload.
-  const handleImageUpload = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const file = event.target.files?.[0];
+  const clearUploadedPhoto = () => {
+    if (uploadedImage) URL.revokeObjectURL(uploadedImage);
+    setUploadedImage(null);
+    setUploadedPhotoUrl(null);
+    setUploadedPhotoPublicId(null);
+    setPhotoUploadError("");
+    setGenerationMessage("");
+  };
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (!file) return;
 
-    // Allow only JPG, PNG and WEBP images.
-    const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
-
-    if (!allowedTypes.includes(file.type)) {
+    if (!ALLOWED_TYPES.includes(file.type)) {
       setPhotoUploadError("Only JPG, PNG and WEBP images are allowed!");
       return;
     }
-
-    // Check the maximum file size (5 MB).
-    if (file.size > 5 * 1024 * 1024) {
+    if (file.size > MAX_FILE_SIZE) {
       setPhotoUploadError("Image size must not exceed 5 MB.");
       return;
     }
 
-    // Release the previous browser preview if one exists.
-    if (uploadedImage) {
-      URL.revokeObjectURL(uploadedImage);
-    }
-
-    // Create an instant browser preview.
-    const imageUrl = URL.createObjectURL(file);
-    setUploadedImage(imageUrl);
-
-    // Clear previous upload information.
+    if (uploadedImage) URL.revokeObjectURL(uploadedImage);
+    setUploadedImage(URL.createObjectURL(file));
     setUploadedPhotoUrl(null);
     setUploadedPhotoPublicId(null);
     setPhotoUploadError("");
     setGenerationMessage("");
 
-    // Prepare the image for the backend.
     const formData = new FormData();
     formData.append("photo", file);
 
     try {
       setIsUploadingPhoto(true);
-
-      // Send the image to the Express backend.
-      const response = await fetch(
-        "http://localhost:5000/api/upload/user-photo",
-        {
-          method: "POST",
-          body: formData,
-        },
-      );
-
-      const result = await response.json();
-
-      if (!response.ok || !result.success) {
-        throw new Error(result.message || "Photo upload failed.");
+      const res = await fetch(`${API_BASE}/api/upload/user-photo`, {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || "Photo upload failed.");
       }
-
-      // Save the Cloudinary image URL and public ID.
-      setUploadedPhotoUrl(result.image.url);
-      setUploadedPhotoPublicId(result.image.public_id);
-
-      console.log("User photo uploaded successfully!");
-      console.log("Cloudinary URL:", result.image.url);
-      console.log("Cloudinary Public ID:", result.image.public_id);
-    } catch (error) {
-      console.error("User photo upload error:", error);
-
+      setUploadedPhotoUrl(data.image.url);
+      setUploadedPhotoPublicId(data.image.public_id);
+    } catch (err) {
       setPhotoUploadError(
-        error instanceof Error
-          ? error.message
-          : "Something went wrong while uploading your photo.",
+        err instanceof Error ? err.message : "Photo upload failed.",
       );
     } finally {
       setIsUploadingPhoto(false);
     }
   };
 
-  // Handle real AI Try-On generation.
   const handleGenerateTryOn = async () => {
-    if (!isReadyToGenerate || !selectedProduct) return;
-
     const personImageUrl =
       selectedMode === "personal"
         ? uploadedPhotoUrl
         : selectedVirtualModelDetails?.image;
-
-    if (!personImageUrl) return;
+    if (!isReadyToGenerate || !selectedProduct || !personImageUrl) return;
 
     setIsGenerating(true);
     setGenerationMessage("");
     setGeneratedImageUrl(null);
 
     try {
-      // Send the uploaded photo and selected product to the backend.
-      const response = await fetch("http://localhost:5000/api/tryon", {
+      const res = await fetch(`${API_BASE}/api/tryon`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          personImageUrl: personImageUrl,
+          personImageUrl,
           garmentImageUrl: selectedProduct.image,
           garmentDescription: selectedProduct.category,
         }),
       });
-
-      const result = await response.json();
-
-      // Check whether the backend generated the image successfully.
-      if (!response.ok || !result.success || !result.imageUrl) {
-        throw new Error(result.message || "Virtual Try-On generation failed.");
+      const data = await res.json();
+      if (!res.ok || !data.success || !data.imageUrl) {
+        throw new Error(data.message || "Virtual Try-On generation failed.");
       }
-
-      // Store the generated image URL.
-      setGeneratedImageUrl(result.imageUrl);
-
+      setGeneratedImageUrl(data.imageUrl);
       setGenerationMessage(
         "Your virtual try-on has been generated successfully!",
       );
-
-      console.log("Generated Try-On Image:", result.imageUrl);
-      console.log("Masked Image:", result.maskedImage);
-    } catch (error) {
-      console.error("Try-On generation error:", error);
-
+    } catch (err) {
       setGenerationMessage(
-        error instanceof Error
-          ? error.message
+        err instanceof Error
+          ? err.message
           : "Something went wrong while generating your Try-On.",
       );
     } finally {
@@ -344,50 +232,53 @@ function TryOnContent() {
     }
   };
 
-  // Reset the current Try-On session.
   const handleResetTryOn = () => {
-    // Prevent resetting while generation is in progress.
     if (isGenerating) return;
-
-    // Release the temporary image URL.
-    if (uploadedImage) {
-      URL.revokeObjectURL(uploadedImage);
-    }
-
-    // Remove the uploaded photo.
-    setUploadedImage(null);
-    setUploadedPhotoUrl(null);
-    setUploadedPhotoPublicId(null);
+    clearUploadedPhoto();
     setSelectedVirtualModel(null);
-
-    // Clear messages.
-    setPhotoUploadError("");
-    setGenerationMessage("");
+    setModelIndex(0);
     setGeneratedImageUrl(null);
   };
 
+  const handleDownloadResult = async () => {
+    if (!generatedImageUrl) return;
+    try {
+      const res = await fetch(generatedImageUrl);
+      if (!res.ok) throw new Error("Download failed.");
+      const url = URL.createObjectURL(await res.blob());
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "virtual-ai-tryon-result.png";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch {
+      alert("Unable to download the image. Please try again.");
+    }
+  };
+
+  const previewImageSrc =
+    selectedMode === "personal"
+      ? uploadedImage
+      : (selectedVirtualModelDetails?.image ?? null);
+
   return (
     <main className="try-on-page">
-      {/* Page heading */}
       <div className="try-on-header">
         <Link href="/explore" className="back-to-explore">
           ← Back to Explore
         </Link>
-
         <h1>Virtual AI Try-On</h1>
-
         <p>
-          Experience your style before you buy. Upload your photo and get ready
-          to try your favorite products virtually.
+          Experience your style before you buy. Upload your photo or pick an AI
+          model and preview your look before you buy.
         </p>
       </div>
 
-      {/* Main Try-On workspace */}
       <section className="try-on-container">
-        {/* Choose between personal photo and AI virtual model */}
         <section className="try-on-mode">
           <h2>Choose Your Try-On Mode</h2>
-
           <div className="mode-options">
             <button
               type="button"
@@ -396,7 +287,6 @@ function TryOnContent() {
             >
               Personal Photo
             </button>
-
             <button
               type="button"
               className={selectedMode === "virtual" ? "active" : ""}
@@ -407,68 +297,83 @@ function TryOnContent() {
           </div>
         </section>
 
-        {/* User photo upload section */}
-        {selectedMode === "personal" && (
+        <div className="try-on-product">
+          <h2>Selected Product</h2>
+          {productLoading ? (
+            <div className="selected-product-placeholder">
+              <p>Loading selected product...</p>
+            </div>
+          ) : selectedProduct ? (
+            <div className="selected-product-card">
+              <Image
+                src={selectedProduct.image}
+                alt={selectedProduct.name}
+                width={300}
+                height={350}
+                className="selected-product-image"
+              />
+              <div className="selected-product-info">
+                <h3>{selectedProduct.name}</h3>
+                <p>{selectedProduct.category}</p>
+                <h4>₹{selectedProduct.price.toLocaleString("en-IN")}</h4>
+                <p>Selected Size: {selectedSize || "Not selected"}</p>
+                <p>Selected Color: {selectedColor || "Not selected"}</p>
+              </div>
+            </div>
+          ) : (
+            <div className="selected-product-placeholder">
+              <p>
+                {productError ||
+                  "No product selected. Please choose a product first."}
+              </p>
+              <Link href="/explore" className="upload-photo-btn">
+                Browse Products
+              </Link>
+            </div>
+          )}
+        </div>
+
+        {selectedMode === "personal" ? (
           <div className="try-on-upload">
             <h2>Upload Your Photo</h2>
-
             <div className="upload-placeholder">
               <input
                 type="file"
                 id="photo-upload"
                 accept="image/png, image/jpeg, image/webp"
                 onChange={handleImageUpload}
-                onClick={(event) => {
-                  // Allow selecting the same image again.
-                  event.currentTarget.value = "";
+                onClick={(e) => {
+                  e.currentTarget.value = "";
                 }}
                 hidden
               />
-
               {uploadedImage ? (
                 <>
-                  {/* Display uploaded photo */}
                   <img
                     src={uploadedImage}
                     alt="Uploaded preview"
                     className="uploaded-photo-preview"
                   />
-
-                  {isUploadingPhoto ? (
-                    <p>Uploading your photo to Cloudinary...</p>
-                  ) : uploadedPhotoUrl ? (
-                    <p>Photo uploaded successfully!</p>
-                  ) : (
-                    <p>Photo preview ready. Upload failed or incomplete.</p>
-                  )}
-
+                  <p>
+                    {isUploadingPhoto
+                      ? "Uploading your photo to Cloudinary..."
+                      : uploadedPhotoUrl
+                        ? "Photo uploaded successfully!"
+                        : "Photo preview ready. Upload failed or incomplete."}
+                  </p>
                   {photoUploadError && (
                     <p className="try-on-validation-message">
                       {photoUploadError}
                     </p>
                   )}
-
                   <div className="photo-action-buttons">
-                    {/* Allow users to upload a different photo */}
                     <label htmlFor="photo-upload" className="upload-photo-btn">
                       Change Photo
                     </label>
-
-                    {/* Remove the current uploaded photo */}
                     <button
                       type="button"
                       className="remove-photo-btn"
-                      onClick={() => {
-                        if (uploadedImage) {
-                          URL.revokeObjectURL(uploadedImage);
-                        }
-
-                        setUploadedImage(null);
-                        setUploadedPhotoUrl(null);
-                        setUploadedPhotoPublicId(null);
-                        setPhotoUploadError("");
-                        setGenerationMessage("");
-                      }}
+                      onClick={clearUploadedPhoto}
                     >
                       Remove Photo
                     </button>
@@ -477,18 +382,12 @@ function TryOnContent() {
               ) : (
                 <>
                   <div className="upload-icon">＋</div>
-
                   <h3>Upload Your Image</h3>
-
                   <p>Select a photo to start your virtual try-on experience.</p>
-
-                  {/* Button that opens the file picker */}
                   <label htmlFor="photo-upload" className="upload-photo-btn">
                     Choose Photo
                   </label>
-
                   <span>PNG, JPG or JPEG</span>
-
                   <p className="upload-guidance-text">
                     💡 Use a clear, well-lit photo. Keep your full body visible
                     for clothing try-on.
@@ -497,118 +396,106 @@ function TryOnContent() {
               )}
             </div>
           </div>
-        )}
-        {/* Product preview section */}
-        <div className="try-on-product">
-          <h2>Selected Product</h2>
+        ) : (
+          <div className="virtual-model-section">
+            <h2>Choose Your AI Virtual Model</h2>
+            <div className="virtual-model-panel">
+              <div className="model-gender-options">
+                {(["male", "female"] as const).map((g) => (
+                  <button
+                    key={g}
+                    type="button"
+                    className={selectedModelGender === g ? "active" : ""}
+                    onClick={() => {
+                      setSelectedModelGender(g);
+                      setModelIndex(0);
+                    }}
+                  >
+                    {g === "male" ? "Male" : "Female"}
+                  </button>
+                ))}
+              </div>
 
-          {productLoading ? (
-            <div className="selected-product-placeholder">
-              <p>Loading selected product...</p>
-            </div>
-          ) : productError ? (
-            <div className="selected-product-placeholder">
-              <p>{productError}</p>
-              <Link href="/explore">Browse Products</Link>
-            </div>
-          ) : selectedProduct ? (
-            <div className="selected-product-card">
-              {/* Product image */}
-              <Image
-                src={selectedProduct.image}
-                alt={selectedProduct.name}
-                width={300}
-                height={350}
-                className="selected-product-image"
-              />
+              <div className="virtual-model-carousel">
+                <button
+                  type="button"
+                  className="model-nav-btn"
+                  aria-label="Previous model"
+                  onClick={() =>
+                    setModelIndex(
+                      (i) =>
+                        (i - 1 + currentModels.length) % currentModels.length,
+                    )
+                  }
+                >
+                  ‹
+                </button>
 
-              {/* Product information */}
-              <div className="selected-product-info">
-                <h3>{selectedProduct.name}</h3>
+                <button
+                  type="button"
+                  className={
+                    selectedVirtualModel === activeModel.id
+                      ? "virtual-model-card selected"
+                      : "virtual-model-card"
+                  }
+                  onClick={() =>
+                    setSelectedVirtualModel((prev) =>
+                      prev === activeModel.id ? null : activeModel.id,
+                    )
+                  }
+                >
+                  <div className="virtual-model-image-wrap">
+                    <img
+                      src={activeModel.image}
+                      alt={activeModel.id}
+                      className="virtual-model-image"
+                    />
+                  </div>
+                  <div className="virtual-model-meta">
+                    <span className="virtual-model-name">{activeModel.id}</span>
+                    {selectedVirtualModel === activeModel.id ? (
+                      <span className="model-selected-label">Selected</span>
+                    ) : (
+                      <span className="model-unselected-hint">Select</span>
+                    )}
+                  </div>
+                </button>
 
-                <p>{selectedProduct.category}</p>
+                <button
+                  type="button"
+                  className="model-nav-btn"
+                  aria-label="Next model"
+                  onClick={() =>
+                    setModelIndex((i) => (i + 1) % currentModels.length)
+                  }
+                >
+                  ›
+                </button>
+              </div>
 
-                <h4>₹{selectedProduct.price.toLocaleString("en-IN")}</h4>
-
-                <p>Selected Size: {selectedSize || "Not selected"}</p>
-
-                <p>Selected Color: {selectedColor || "Not selected"}</p>
+              <div className="model-carousel-dots">
+                {currentModels.map((model: VirtualModel, idx: number) => (
+                  <button
+                    key={model.id}
+                    type="button"
+                    aria-label={`View ${model.id}`}
+                    className={
+                      idx === modelIndex ? "model-dot active" : "model-dot"
+                    }
+                    onClick={() => {
+                      setModelIndex(idx);
+                      setSelectedVirtualModel(model.id);
+                    }}
+                  />
+                ))}
               </div>
             </div>
-          ) : (
-            <div className="selected-product-placeholder">
-              <p>No product selected. Please choose a product first.</p>
-
-              <Link href="/explore">Browse Products</Link>
-            </div>
-          )}
-        </div>
+          </div>
+        )}
       </section>
 
-      {/* AI Virtual Model Selection Section */}
-      {selectedMode === "virtual" && (
-        <div className="virtual-model-section">
-          <h2>Choose Your AI Virtual Model</h2>
-
-          {/* Select Model Gender */}
-          <div className="model-gender-options">
-            <button
-              type="button"
-              className={selectedModelGender === "male" ? "active" : ""}
-              onClick={() => {
-                setSelectedModelGender("male");
-                setSelectedVirtualModel(null);
-              }}
-            >
-              Male
-            </button>
-
-            <button
-              type="button"
-              className={selectedModelGender === "female" ? "active" : ""}
-              onClick={() => {
-                setSelectedModelGender("female");
-                setSelectedVirtualModel(null);
-              }}
-            >
-              Female
-            </button>
-          </div>
-
-          {/* Display Available Virtual Models */}
-          <div className="virtual-model-grid">
-            {virtualModels[selectedModelGender].map((model) => (
-              <button
-                type="button"
-                key={model.id}
-                className={
-                  selectedVirtualModel === model.id
-                    ? "virtual-model-card selected"
-                    : "virtual-model-card"
-                }
-                onClick={() => setSelectedVirtualModel(model.id)}
-              >
-                <img
-                  src={model.image}
-                  alt={model.id}
-                  className="virtual-model-image"
-                />
-
-                <span>{model.id}</span>
-
-                {selectedVirtualModel === model.id && (
-                  <span className="model-selected-label">Selected</span>
-                )}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Try-On Confirmation Summary */}
       <section className="try-on-summary-section">
         <h2>Review Your Try-On</h2>
-
         <div className="try-on-summary-card">
           <p>
             <strong>Photo:</strong>{" "}
@@ -620,7 +507,6 @@ function TryOnContent() {
                 ? "AI Virtual Model"
                 : "No model selected"}
           </p>
-
           {selectedMode === "virtual" && selectedVirtualModelDetails && (
             <>
               <p>
@@ -632,18 +518,15 @@ function TryOnContent() {
               </p>
             </>
           )}
-
           <p>
             <strong>Product:</strong>{" "}
             {selectedProduct ? selectedProduct.name : "No product selected"}
           </p>
-
           {requiresSize && (
             <p>
               <strong>Size:</strong> {selectedSize || "Not selected"}
             </p>
           )}
-
           {requiresColor && (
             <p>
               <strong>Color:</strong> {selectedColor || "Not selected"}
@@ -652,7 +535,6 @@ function TryOnContent() {
         </div>
       </section>
 
-      {/* Generate Try-On section */}
       <section className="generate-try-on-section">
         <button
           type="button"
@@ -662,7 +544,7 @@ function TryOnContent() {
         >
           {isGenerating ? (
             <>
-              <span className="try-on-spinner"></span>
+              <span className="try-on-spinner" />
               Generating your virtual try-on...
             </>
           ) : (
@@ -680,58 +562,38 @@ function TryOnContent() {
         </button>
 
         {generationMessage && (
-          <p className="generation-success-message">{generationMessage}</p>
-        )}
-
-        {/* Display validation messages */}
-        {selectedMode === "personal" && !uploadedImage && (
-          <p className="try-on-validation-message">
-            Please upload your photo to continue.
+          <p
+            className={
+              generatedImageUrl
+                ? "generation-success-message"
+                : "try-on-validation-message"
+            }
+          >
+            {generationMessage}
           </p>
         )}
 
-        {!productLoading && !selectedProduct && (
-          <p className="try-on-validation-message">
-            Please select a valid product first.
+        {validationErrors.map((msg) => (
+          <p key={msg} className="try-on-validation-message">
+            {msg}
           </p>
-        )}
-
-        {selectedProduct && requiresSize && !isSizeValid && (
-          <p className="try-on-validation-message">
-            Please select a valid product size.
-          </p>
-        )}
-
-        {selectedProduct && requiresColor && !isColorValid && (
-          <p className="try-on-validation-message">
-            Please select a valid product color.
-          </p>
-        )}
+        ))}
       </section>
 
-      {/* Try-On Result Preview Section */}
       <section className="try-on-result-section">
-        {/* Try-On Status Indicator */}
-        <div className={`try-on-status ${tryOnStatusClass}`}>
-          <span className="status-dot"></span>
-          <p>{tryOnStatus}</p>
+        <div className={`try-on-status ${status.cls}`}>
+          <span className="status-dot" />
+          <p>{status.label}</p>
         </div>
 
         <h2>Your Try-On Result</h2>
 
         <div className="try-on-comparison">
-          {/* Original Uploaded Photo */}
           <div className="comparison-card">
             <h3>Original Photo</h3>
-
             <div className="comparison-image">
-              {selectedMode === "personal" && uploadedImage ? (
-                <img src={uploadedImage} alt="Your original uploaded photo" />
-              ) : selectedMode === "virtual" && selectedVirtualModelDetails ? (
-                <img
-                  src={selectedVirtualModelDetails.image}
-                  alt={`Selected virtual model ${selectedVirtualModelDetails.id}`}
-                />
+              {previewImageSrc ? (
+                <img src={previewImageSrc} alt="Selected try-on source" />
               ) : (
                 <div className="comparison-placeholder">
                   <span>📷</span>
@@ -741,21 +603,23 @@ function TryOnContent() {
             </div>
           </div>
 
-          {/* Virtual Try-On Result */}
           <div className="comparison-card">
             <h3>Virtual Try-On Result</h3>
-
-            <div className="comparison-image">
+            <div
+              className={
+                isGenerating
+                  ? "comparison-image is-scanning"
+                  : "comparison-image"
+              }
+            >
               {generatedImageUrl ? (
                 <img
                   src={generatedImageUrl}
                   alt="AI-generated virtual try-on result"
-                  className="uploaded-photo-preview"
                 />
               ) : (
                 <div className="comparison-placeholder">
                   <span>✨</span>
-
                   <p>
                     {isGenerating
                       ? "Generating your virtual try-on..."
@@ -768,43 +632,15 @@ function TryOnContent() {
         </div>
       </section>
 
-      {/* Download Try-On Result */}
       <div className="download-result-section">
         <button
           type="button"
           className="download-result-btn"
           disabled={!generatedImageUrl}
-          onClick={async () => {
-            if (!generatedImageUrl) return;
-
-            try {
-              const response = await fetch(generatedImageUrl);
-
-              if (!response.ok) {
-                throw new Error("Unable to download the generated image.");
-              }
-
-              const blob = await response.blob();
-              const downloadUrl = URL.createObjectURL(blob);
-
-              const link = document.createElement("a");
-              link.href = downloadUrl;
-              link.download = "virtual-ai-tryon-result.png";
-
-              document.body.appendChild(link);
-              link.click();
-              link.remove();
-
-              URL.revokeObjectURL(downloadUrl);
-            } catch (error) {
-              console.error("Image download error:", error);
-              alert("Unable to download the image. Please try again.");
-            }
-          }}
+          onClick={handleDownloadResult}
         >
           ↓ Download Try-On Result
         </button>
-
         <p>
           {generatedImageUrl
             ? "Your generated Try-On image is ready to download."
@@ -815,7 +651,6 @@ function TryOnContent() {
   );
 }
 
-// Wrap the Try-On content in Suspense because it uses useSearchParams.
 export default function TryOnPage() {
   return (
     <Suspense
