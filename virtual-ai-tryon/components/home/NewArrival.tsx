@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import ProductCard from "@/components/explore/ProductCard";
 import type { Product, ProductsApiResponse } from "@/types/product";
 import Link from "next/link";
+import { FiChevronLeft, FiChevronsRight } from "react-icons/fi";
 
 export default function NewArrivals() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -54,7 +55,7 @@ export default function NewArrivals() {
         <p>Discover the latest additions to your wardrobe.</p>
 
         <Link href="/explore" className="new-arrivals-view-all">
-          View All →
+          View All <FiChevronsRight />
         </Link>
       </div>
 

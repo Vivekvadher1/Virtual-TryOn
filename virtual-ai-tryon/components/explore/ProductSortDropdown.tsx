@@ -1,4 +1,3 @@
-
 interface ProductSortDropdownProps {
   sortOption: string;
   onSortChange: (value: string) => void;
@@ -10,9 +9,7 @@ export default function ProductSortDropdown({
 }: ProductSortDropdownProps) {
   return (
     <div className="product-sort">
-      <label htmlFor="product-sort-select">
-        Sort By:
-      </label>
+      <label htmlFor="product-sort-select">Sort By:</label>
 
       <select
         id="product-sort-select"

@@ -76,7 +76,7 @@ export default function Navbar() {
             <span>Wishlist</span>
           </span>
           {/* {wishlistCount > 0 && (
-            <span className="wishlist-count-badge">{wishlistCount}</span>
+            <span className="wishlist-count">{wishlistCount}</span>
           )} */}
         </Link>
 

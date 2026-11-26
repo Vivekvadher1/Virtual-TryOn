@@ -11,6 +11,15 @@ import {
   VIRTUAL_MODELS,
   VirtualModel,
 } from "@/src/constant/VIrtualModels";
+import {
+  FiCamera,
+  FiChevronLeft,
+  FiChevronRight,
+  FiChevronsLeft,
+  FiDownload,
+  FiPlus,
+} from "react-icons/fi";
+import { HiOutlineLightBulb, HiOutlineSparkles } from "react-icons/hi";
 
 const API_BASE = "http://localhost:5000";
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
@@ -267,7 +276,7 @@ function TryOnContent() {
     <main className="try-on-page">
       <div className="try-on-header">
         <Link href="/explore" className="back-to-explore">
-          ← Back to Explore
+          <FiChevronsLeft aria-hidden="true" /> Back to Explore
         </Link>
         <h1>Virtual AI Try-On</h1>
         <p>
@@ -381,7 +390,9 @@ function TryOnContent() {
                 </>
               ) : (
                 <>
-                  <div className="upload-icon">＋</div>
+                  <div className="upload-icon">
+                    <FiPlus aria-hidden="true" />
+                  </div>
                   <h3>Upload Your Image</h3>
                   <p>Select a photo to start your virtual try-on experience.</p>
                   <label htmlFor="photo-upload" className="upload-photo-btn">
@@ -389,8 +400,9 @@ function TryOnContent() {
                   </label>
                   <span>PNG, JPG or JPEG</span>
                   <p className="upload-guidance-text">
-                    💡 Use a clear, well-lit photo. Keep your full body visible
-                    for clothing try-on.
+                    <HiOutlineLightBulb aria-hidden="true" /> Use a clear,
+                    well-lit photo. Keep your full body visible for clothing
+                    try-on.
                   </p>
                 </>
               )}
@@ -428,7 +440,7 @@ function TryOnContent() {
                     )
                   }
                 >
-                  ‹
+                  <FiChevronLeft aria-hidden="true" />
                 </button>
 
                 <button
@@ -469,7 +481,7 @@ function TryOnContent() {
                     setModelIndex((i) => (i + 1) % currentModels.length)
                   }
                 >
-                  ›
+                  <FiChevronRight aria-hidden="true" />
                 </button>
               </div>
 
@@ -596,7 +608,9 @@ function TryOnContent() {
                 <img src={previewImageSrc} alt="Selected try-on source" />
               ) : (
                 <div className="comparison-placeholder">
-                  <span>📷</span>
+                  <span>
+                    <FiCamera aria-hidden="true" />
+                  </span>
                   <p>Your uploaded photo will appear here.</p>
                 </div>
               )}
@@ -619,7 +633,9 @@ function TryOnContent() {
                 />
               ) : (
                 <div className="comparison-placeholder">
-                  <span>✨</span>
+                  <span>
+                    <HiOutlineSparkles aria-hidden="true" />
+                  </span>
                   <p>
                     {isGenerating
                       ? "Generating your virtual try-on..."
@@ -639,7 +655,7 @@ function TryOnContent() {
           disabled={!generatedImageUrl}
           onClick={handleDownloadResult}
         >
-          ↓ Download Try-On Result
+          <FiDownload aria-hidden="true" /> Download Try-On Result
         </button>
         <p>
           {generatedImageUrl

@@ -13,6 +13,11 @@ function ExplorePageContent() {
   const searchParams = useSearchParams();
   const categoryFromUrl = searchParams.get("category");
 
+  const GENDER_OPTIONS = ["All", "Men", "Women", "Unisex"] as const;
+  type GenderOption = (typeof GENDER_OPTIONS)[number];
+
+  const [selectedGender, setSelectedGender] = useState<GenderOption>("All");
+
   // Stores the currently selected product category.
   const [selectedCategory, setSelectedCategory] = useState(
     categoryFromUrl || "All",
@@ -79,6 +84,7 @@ function ExplorePageContent() {
   // Resets all product filters and sorting options.
   const handleResetFilters = () => {
     setSelectedCategory("All");
+    setSelectedGender("All");
     setSearchTerm("");
     setSortOption("default");
   };
@@ -88,11 +94,17 @@ function ExplorePageContent() {
     const matchesCategory =
       selectedCategory === "All" || product.category === selectedCategory;
 
+    const productGender = product.gender || "Unisex";
+    const matchesGender =
+      selectedGender === "All" ||
+      productGender === selectedGender ||
+      (selectedGender !== "Unisex" && productGender === "Unisex");
+
     const matchesSearch = product.name
       .toLowerCase()
       .includes(searchTerm.toLowerCase().trim());
 
-    return matchesCategory && matchesSearch;
+    return matchesCategory && matchesSearch && matchesGender;
   });
 
   // Sorts the filtered products based on the selected sorting option.
@@ -133,6 +145,24 @@ function ExplorePageContent() {
         onCategoryChange={setSelectedCategory}
       />
 
+      {/* Gender filters */}
+      <div
+        className="gender-filter-bar"
+        role="group"
+        aria-label="Filter by gender"
+      >
+        {GENDER_OPTIONS.map((gender) => (
+          <button
+            key={gender}
+            type="button"
+            className={`gender-filter-btn ${selectedGender === gender ? "active" : ""}`}
+            onClick={() => setSelectedGender(gender)}
+          >
+            {gender}
+          </button>
+        ))}
+      </div>
+
       <div className="product-controls">
         <div className="sort-reset-group">
           <ProductSortDropdown
@@ -158,34 +188,6 @@ function ExplorePageContent() {
           Showing {sortedProducts.length} products
         </p>
       </div>
-
-      {/* Dynamically filtered product collection */}
-      {/* <section className="product-listing-section">
-        {loading ? (
-          <p className="loading-products-message">Loading products...</p>
-        ) : error ? (
-          <p className="empty-products-message">{error}</p>
-        ) : (
-          <div className="product-listing-grid">
-            {sortedProducts.length > 0 ? (
-              sortedProducts.map((product) => (
-                <ProductCard
-                  key={product._id}
-                  id={product._id}
-                  name={product.name}
-                  category={product.category}
-                  price={product.price}
-                  image={product.image}
-                />
-              ))
-            ) : (
-              <p className="empty-products-message">
-                No products found. Try a different search or category.
-              </p>
-            )}
-          </div>
-        )}
-      </section> */}
 
       {/* Dynamically filtered product collection */}
       <section className="product-listing-section">
@@ -226,8 +228,8 @@ function ExplorePageContent() {
               No <span>Products</span> Found
             </h3>
             <p>
-              Nothing matched your current search or filter. Try another keyword,
-              category, or reset your filters.
+              Nothing matched your current search or filter. Try another
+              keyword, category, or reset your filters.
             </p>
             <button
               type="button"

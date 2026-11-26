@@ -235,13 +235,26 @@
 
 /* Inline Photo Upload Guidance */
 .upload-guidance-text {
-  max-width: 300px;
-  margin: 14px auto 0 !important;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 6px;
+  max-width: 290px;
+  margin: 12px auto 0 !important;
+  padding: 0 4px;
   color: #71717a;
   font-size: 12px;
-  line-height: 1.6;
+  line-height: 1.5;
   text-align: center;
   font-weight: 500;
+}
+
+.upload-guidance-text svg {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  margin-top: 2px;
+  color: var(--brand-violet);
 }
 
 /* Uploaded Photo Preview */
@@ -953,7 +966,9 @@
 .comparison-image {
   position: relative;
   width: 100%;
-  height: 350px;
+  aspect-ratio: 3/4;
+  height: auto;
+  max-height: 440px;
   overflow: hidden;
   border-radius: 16px;
   border: 1px solid rgba(139, 92, 246, 0.14);
@@ -964,7 +979,8 @@
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
+  object-position: top center;
 }
 
 .comparison-placeholder {
@@ -1004,6 +1020,9 @@
 }
 
 .download-result-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   padding: 13px 30px;
   border: none;
   border-radius: 999px;
@@ -1082,7 +1101,9 @@
   }
 
   .comparison-image {
-    height: 300px;
+    aspect-ratio: 3 / 4;
+    height: auto;
+    max-height: 360px;
   }
 
   .upload-placeholder,

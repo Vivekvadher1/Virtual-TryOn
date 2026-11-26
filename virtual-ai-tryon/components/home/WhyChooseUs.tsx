@@ -1,3 +1,8 @@
+import { BsFillSuitSpadeFill } from "react-icons/bs";
+import { GoNorthStar } from "react-icons/go";
+import { MdStyle } from "react-icons/md";
+import { PiShoppingCartDuotone } from "react-icons/pi";
+
 export default function WhyChooseUs() {
   const features = [
     {
@@ -5,27 +10,27 @@ export default function WhyChooseUs() {
       title: "Virtual Try-On",
       description:
         "Try different fashion products virtually before making a purchase.",
-      icon: "✦",
+      icon: <GoNorthStar />,
     },
     {
       number: "02",
       title: "Your Choice of Model",
       description:
         "Use your own photo or choose an AI-generated model for your virtual try-on.",
-      icon: "◈",
+      icon: <BsFillSuitSpadeFill />,
     },
     {
       number: "03",
       title: "Explore Different Styles",
       description:
         "Discover clothing, footwear, eyewear and more in one place.",
-      icon: "◇",
+      icon: <MdStyle />,
     },
     {
       number: "04",
       title: "Easy Shopping Experience",
       description: "Browse products and explore your personal style with ease.",
-      icon: "♡",
+      icon: <PiShoppingCartDuotone />,
     },
   ];
 

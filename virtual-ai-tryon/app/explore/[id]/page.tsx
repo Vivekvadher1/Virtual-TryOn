@@ -1,12 +1,12 @@
 "use client";
 
-import { use, useState, Suspense, useEffect } from "react";
+import { use, useState, Suspense, useEffect, useMemo } from "react";
 
 import Image from "next/image";
 import Link from "next/link";
 
 import type { Product } from "@/types/product";
-import ProductNotFound from "@/components/explore/NotFound";
+import ProductNotFound from "@/components/explore/ProductNotFound";
 
 // Shared key used by the Product Details and Wishlist pages.
 const WISHLIST_KEY = "wishlist";
@@ -101,6 +101,13 @@ function ProductDetails({ params }: ProductDetailsPageProps) {
 
         // Store the selected product.
         setProduct(result.data);
+
+        // Default to the first available variant or color so an active image & color are always ready.
+        const defaultColor =
+          result.data.colorVariants?.[0]?.color ??
+          result.data.colors?.[0] ??
+          null;
+        setSelectedColor(defaultColor);
       } catch (err) {
         console.error("Product fetching error:", err);
 
@@ -111,7 +118,33 @@ function ProductDetails({ params }: ProductDetailsPageProps) {
     };
 
     fetchProduct();
-  }, [id]);
+  }, [id, isValidProductId]);
+
+  // Resolve available color names from colorVariants first, falling back to product.colors.
+  const colorOptions = useMemo(() => {
+    if (!product) return [];
+    if (product.colorVariants && product.colorVariants.length > 0) {
+      return product.colorVariants.map((variant) => variant.color);
+    }
+    return product.colors ?? [];
+  }, [product]);
+
+  // Resolve the active image for the selected color.
+  const activeImage = useMemo(() => {
+    if (!product) return "";
+
+    if (selectedColor && product.colorVariants?.length) {
+      const matchedVariant = product.colorVariants.find(
+        (variant) =>
+          variant.color.toLowerCase() === selectedColor.toLowerCase(),
+      );
+      if (matchedVariant?.image) {
+        return matchedVariant.image;
+      }
+    }
+
+    return product.colorVariants?.[0]?.image || product.image;
+  }, [product, selectedColor]);
 
   // Check whether the current product is already in the wishlist.
   useEffect(() => {
@@ -197,7 +230,11 @@ function ProductDetails({ params }: ProductDetailsPageProps) {
         <div className="product-details-image">
           <Image
             src={product.image}
-            alt={product.name}
+            alt={
+              selectedColor
+                ? `${product.name} - ${selectedColor}`
+                : product.name
+            }
             width={600}
             height={700}
             loading="eager"
@@ -238,7 +275,7 @@ function ProductDetails({ params }: ProductDetailsPageProps) {
           )}
 
           {/* Display color options when available */}
-          {product.colors && product.colors.length > 0 && (
+          {/* {product.colors && product.colors.length > 0 && (
             <div className="product-color-section">
               <h3>
                 Select Color
@@ -247,6 +284,30 @@ function ProductDetails({ params }: ProductDetailsPageProps) {
 
               <div className="product-color-options">
                 {product.colors.map((color) => (
+                  <button
+                    key={color}
+                    type="button"
+                    className={`product-color-btn ${
+                      selectedColor === color ? "selected" : ""
+                    }`}
+                    style={{ backgroundColor: color.toLowerCase() }}
+                    aria-label={`Select ${color}`}
+                    aria-pressed={selectedColor === color}
+                    onClick={() => setSelectedColor(color)}
+                  />
+                ))}
+              </div>
+            </div>
+          )} */}
+          {colorOptions.length > 0 && (
+            <div className="product-color-section">
+              <h3>
+                Select Color
+                {selectedColor && `: ${selectedColor}`}
+              </h3>
+
+              <div className="product-color-options">
+                {colorOptions.map((color) => (
                   <button
                     key={color}
                     type="button"

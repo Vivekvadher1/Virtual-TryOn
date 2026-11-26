@@ -46,10 +46,48 @@
     line-height: 1.7;
 }
 
+.gender-filter-bar {
+    max-width: 1200px;
+    margin: 20px auto 0;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    box-sizing: border-box;
+    animation: uiFadeUp 0.5s ease both;
+}
+
+.gender-filter-btn {
+    padding: 8px 18px;
+    border-radius: 999px;
+    border: 1px solid rgba(139, 92, 246, 0.22);
+    background: rgba(255, 255, 255, 0.9);
+    color: #52525b;
+    font-size: 13.5px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gender-filter-btn:hover {
+    transform: translateY(-1px);
+    border-color: rgba(139, 92, 246, 0.45);
+    color: #171717;
+}
+
+.gender-filter-btn.active {
+    background: var(--gradient-primary);
+    border-color: transparent;
+    color: #ffffff;
+    box-shadow: var(--shadow-violet-sm);
+}
 
 .product-controls {
     max-width: 1200px;
-    margin: 28px auto;
+    margin: 20px auto 28px;
     padding: 14px 22px;
     display: flex;
     align-items: center;
@@ -183,9 +221,14 @@
         font-size: 38px;
     }
 
+    .gender-filter-bar {
+        padding: 0 18px;
+        gap: 8px;
+    }
+
     .product-controls {
         gap: 12px;
-        margin: 24px 18px;
+        margin: 18px 18px 24px;
         padding: 14px 16px;
     }
 
@@ -205,6 +248,15 @@
 }
 
 @media (max-width: 600px) {
+    .gender-filter-bar {
+        justify-content: flex-start;
+    }
+
+    .gender-filter-btn {
+        padding: 7px 14px;
+        font-size: 12.5px;
+    }
+
     .product-controls {
         padding: 14px 16px;
         gap: 12px;

@@ -1,14 +1,15 @@
-// ==========================================
-// 1. IMPORT MONGOOSE
-// ==========================================
-
-// Mongoose is used to define schemas and models
-// for storing and managing MongoDB documents.
 const mongoose = require("mongoose");
 
-// ==========================================
-// 2. DEFINE PRODUCT SCHEMA
-// ==========================================
+//  DEFINE PRODUCT SCHEMA
+// Color variant
+const colorVariantSchema = new mongoose.Schema(
+  {
+    color: { type: String, required: true, trim: true },
+    image: { type: String, required: true, trim: true },
+    imagePublicId: { type: String, required: true, trim: true },
+  },
+  { _id: false },
+);
 
 // A schema defines the structure and validation
 // rules for every product stored in MongoDB.
@@ -57,7 +58,6 @@ const productSchema = new mongoose.Schema(
     },
 
     // Available product sizes
-    // Optional because bags and accessories may not have sizes.
     sizes: {
       type: [String],
       default: [],
@@ -66,6 +66,18 @@ const productSchema = new mongoose.Schema(
     // Available product colors
     colors: {
       type: [String],
+      default: [],
+    },
+
+    // Gender
+    gender: {
+      type: String,
+      enum: ["Unisex", "Men", "Women"],
+      default: "Unisex",
+    },
+
+    colorVariants: {
+      type: [colorVariantSchema],
       default: [],
     },
   },

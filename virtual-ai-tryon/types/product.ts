@@ -1,3 +1,11 @@
+export interface ProductColorVariant {
+  color: string;
+  image: string;
+  imagePublicId: string;
+}
+
+export type ProductGender = "Unisex" | "Men" | "Women";
+
 // Product structure received from the Express backend.
 export interface Product {
     // MongoDB automatically generates this ID.
@@ -11,6 +19,12 @@ export interface Product {
     // Cloudinary image information.
     image: string;
     imagePublicId: string;
+
+    // Gender 
+    gender?: ProductGender;
+
+    // Color Variant
+    colorVariants?: ProductColorVariant[];
 
     // Additional product details.
     description: string;
