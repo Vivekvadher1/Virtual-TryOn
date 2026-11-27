@@ -3,7 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { useState, Suspense, useEffect } from "react";
+import { useState, Suspense, useEffect, useMemo } from "react";
 import type { Product } from "@/types/product";
 import {
   ALL_VIRTUAL_MODELS,
@@ -24,6 +24,10 @@ import { HiOutlineLightBulb, HiOutlineSparkles } from "react-icons/hi";
 const API_BASE = "http://localhost:5000";
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
+
+function normalizeImageUrl(url: string): string {
+  return url.replace(/^http:\/\//i, "https://");
+}
 
 function TryOnContent() {
   const searchParams = useSearchParams();
@@ -105,14 +109,50 @@ function TryOnContent() {
     return () => controller.abort();
   }, [productId]);
 
+  // Match the selected color against colorVariants first, with safe fallback.
+  const activeVariant = useMemo(() => {
+    if (!selectedProduct) return null;
+
+    const variants = selectedProduct.colorVariants ?? [];
+    if (selectedColor && variants.length > 0) {
+      const matched = variants.find(
+        (v) =>
+          v.color.trim().toLowerCase() === selectedColor.trim().toLowerCase(),
+      );
+      if (matched) return matched;
+    }
+
+    return variants[0] ?? null;
+  }, [selectedProduct, selectedColor]);
+
+  const activeGarmentImage = useMemo(() => {
+    const rawUrl = activeVariant?.image ?? selectedProduct?.image ?? null;
+    return rawUrl ? normalizeImageUrl(rawUrl) : null;
+  }, [activeVariant, selectedProduct]);
+
+  const displayColor = selectedColor || activeVariant?.color || "Not selected";
+
+  const availableColors = useMemo(() => {
+    const fromVariants =
+      selectedProduct?.colorVariants?.map((v) =>
+        v.color.trim().toLowerCase(),
+      ) ?? [];
+    const fromColors =
+      selectedProduct?.colors?.map((c) => c.trim().toLowerCase()) ?? [];
+    return Array.from(new Set([...fromVariants, ...fromColors]));
+  }, [selectedProduct]);
+
   const requiresSize = Boolean(selectedProduct?.sizes?.length);
-  const requiresColor = Boolean(selectedProduct?.colors?.length);
+  const requiresColor = availableColors.length > 0;
   const isSizeValid =
     !requiresSize ||
     Boolean(selectedSize && selectedProduct?.sizes?.includes(selectedSize));
   const isColorValid =
     !requiresColor ||
-    Boolean(selectedColor && selectedProduct?.colors?.includes(selectedColor));
+    Boolean(
+      selectedColor &&
+      availableColors.includes(selectedColor.trim().toLowerCase()),
+    );
 
   const sourceReady =
     selectedMode === "personal"
@@ -206,7 +246,14 @@ function TryOnContent() {
       selectedMode === "personal"
         ? uploadedPhotoUrl
         : selectedVirtualModelDetails?.image;
-    if (!isReadyToGenerate || !selectedProduct || !personImageUrl) return;
+    if (
+      !isReadyToGenerate ||
+      !selectedProduct ||
+      !personImageUrl ||
+      !activeGarmentImage
+    ) {
+      return;
+    }
 
     setIsGenerating(true);
     setGenerationMessage("");
@@ -218,7 +265,7 @@ function TryOnContent() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           personImageUrl,
-          garmentImageUrl: selectedProduct.image,
+          garmentImageUrl: activeGarmentImage,
           garmentDescription: selectedProduct.category,
         }),
       });
@@ -314,19 +361,26 @@ function TryOnContent() {
             </div>
           ) : selectedProduct ? (
             <div className="selected-product-card">
-              <Image
-                src={selectedProduct.image}
-                alt={selectedProduct.name}
-                width={300}
-                height={350}
-                className="selected-product-image"
-              />
+              {activeGarmentImage && (
+                <Image
+                  key={activeGarmentImage}
+                  src={activeGarmentImage}
+                  alt={
+                    displayColor !== "Not selected"
+                      ? `${selectedProduct.name} - ${displayColor}`
+                      : selectedProduct.name
+                  }
+                  width={300}
+                  height={350}
+                  className="selected-product-image"
+                />
+              )}
               <div className="selected-product-info">
                 <h3>{selectedProduct.name}</h3>
                 <p>{selectedProduct.category}</p>
                 <h4>₹{selectedProduct.price.toLocaleString("en-IN")}</h4>
                 <p>Selected Size: {selectedSize || "Not selected"}</p>
-                <p>Selected Color: {selectedColor || "Not selected"}</p>
+                <p>Selected Color: {displayColor}</p>
               </div>
             </div>
           ) : (
@@ -541,7 +595,7 @@ function TryOnContent() {
           )}
           {requiresColor && (
             <p>
-              <strong>Color:</strong> {selectedColor || "Not selected"}
+              <strong>Color:</strong> {displayColor}
             </p>
           )}
         </div>

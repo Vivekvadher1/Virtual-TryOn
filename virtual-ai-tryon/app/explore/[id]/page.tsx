@@ -7,6 +7,7 @@ import Link from "next/link";
 
 import type { Product } from "@/types/product";
 import ProductNotFound from "@/components/explore/ProductNotFound";
+import { getSwatchBackground } from "@/utils/colorSwatch";
 
 // Shared key used by the Product Details and Wishlist pages.
 const WISHLIST_KEY = "wishlist";
@@ -229,7 +230,8 @@ function ProductDetails({ params }: ProductDetailsPageProps) {
       <section className="product-details-container">
         <div className="product-details-image">
           <Image
-            src={product.image}
+            key={activeImage}
+            src={activeImage}
             alt={
               selectedColor
                 ? `${product.name} - ${selectedColor}`
@@ -314,7 +316,7 @@ function ProductDetails({ params }: ProductDetailsPageProps) {
                     className={`product-color-btn ${
                       selectedColor === color ? "selected" : ""
                     }`}
-                    style={{ backgroundColor: color.toLowerCase() }}
+                    style={{ backgroundColor: getSwatchBackground(color) }}
                     aria-label={`Select ${color}`}
                     aria-pressed={selectedColor === color}
                     onClick={() => setSelectedColor(color)}

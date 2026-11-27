@@ -76,6 +76,8 @@ router.post("/", async (req, res) => {
       description,
       sizes,
       colors,
+      gender,
+      colorVariants,
     } = req.body;
 
     // Create a new product document using the Product model.
@@ -88,6 +90,8 @@ router.post("/", async (req, res) => {
       description,
       sizes,
       colors,
+      gender,
+      colorVariants,
     });
 
     // Send a success response with the newly created product.
